@@ -1,0 +1,2 @@
+6 - Auto/Quotes
+7 - Auto/Products/ByCategoryAndNameAndPartNumber
