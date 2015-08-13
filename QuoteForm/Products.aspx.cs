@@ -30,7 +30,7 @@ namespace QuoteForm
                 }
 
                 foreach (Product p in prods)
-                    p.Category = ((EnumCategories)Enum.Parse(typeof(EnumCategories), p.Category)).Humanize();
+                    //p.Category = ((EnumCategories)Enum.Parse(typeof(EnumCategories), p.Category)).Humanize();
                    
                 repProducts.DataSource = prods;
                 repProducts.DataBind();
@@ -45,6 +45,7 @@ namespace QuoteForm
             p.PartNumber = Convert.ToInt32(PartNumber.Text);
             if (Price.Text != "") p.Price = Convert.ToDouble(Price.Text);
             p.Cost = Convert.ToDouble(Cost.Text);
+            p.DefaultQuantity = Convert.ToInt32(DefaultQuantity.Text);
 
             session.Store(p);
             session.SaveChanges();

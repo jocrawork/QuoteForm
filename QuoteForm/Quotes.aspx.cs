@@ -55,5 +55,9 @@ namespace QuoteForm
 
         }
 
+        public string GetGrandTotalString(Quote q)
+        {
+            return q.GetGrandTotal().ToString();
+        }
     }
 }

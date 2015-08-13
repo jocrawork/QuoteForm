@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Raven.Client;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,6 +11,11 @@ namespace QuoteForm.Models
         public Product Product { get; set; }
         public int Quantity { get; set; }
         public double Total { get; set; }
+
+        public LineItem()
+        {
+            Product = new Product();
+        }
         
     }
 
@@ -39,7 +45,13 @@ namespace QuoteForm.Models
     
     public class Quote
     {
-        public List<LineItem> Lines = new List<LineItem>();
+        //subsections
+        public List<LineItem> linesHW = new List<LineItem>();
+        public List<LineItem> linesAcc = new List<LineItem>();
+        public List<LineItem> linesSW = new List<LineItem>();
+        public List<LineItem> linesCC = new List<LineItem>();
+        public List<LineItem> linesInst = new List<LineItem>();
+        public List<LineItem> linesRec = new List<LineItem>();
 
         public string Id { get; set; }
         public string Owner { get; set; }
@@ -62,12 +74,17 @@ namespace QuoteForm.Models
 
         public bool NewLocation { get; set; }
         public bool Dealer { get; set; }
-        public bool TaxExempt { get; set; }
+        public string TaxExempt { get; set; }
 
-        public int GrandTotal { get; set; } //TODO: make this work
+        public double Freight { get; set; }
+        public double SalesTax { get; set; }
+
+        public string InternalNotes { get; set; }
+        public string ExternalNotes { get; set; }
 
         public Quote()
         {
+            TaxExempt = null;
             IsActive = false;
 
             Customer = new Address();
@@ -99,15 +116,133 @@ namespace QuoteForm.Models
             this.Dealer = q.Dealer;
             this.TaxExempt = q.TaxExempt;
 
-            this.GrandTotal = q.GrandTotal;
+            this.linesHW = q.linesHW;
+            this.linesAcc = q.linesAcc;
+            this.linesSW = q.linesSW;
+            this.linesCC = q.linesCC;
+            this.linesInst = q.linesInst;
+            this.linesRec = q.linesRec;
         }
         
-        public Quote AddLineItem(LineItem line)
+        public void AddLineItem(LineItem line)
         {
-            line.Total = line.Product.Price * line.Quantity;
-            this.Lines.Add(line);
+            line.Product.Cost = line.Product.GetCost(line.Product.PartNumber);
+            
+            switch (line.Product.Category)
+                {
+                    case "Hardware":
+                        this.linesHW.Add(line);
+                        break;
+                    case "Accessories":
+                        this.linesAcc.Add(line);
+                        break;
+                    case "Software":
+                        this.linesSW.Add(line);
+                        break;
+                    case "ContentCreation":
+                        this.linesCC.Add(line);
+                        break;
+                    case "Installation":
+                        this.linesInst.Add(line);
+                        break;
+                    case "Recurring":
+                        this.linesRec.Add(line);
+                        break;
+                    default: //just to find anything that doesn't get put where it should be. 
+                        line.Product.Name += " (ERROR)";
+                        this.linesHW.Add(line);
+                        break;
+                }
+        }
+        public void RemoveLineItem(string category, int index)
+        {
+            switch (category)
+            {
+                case "Hardware":
+                    this.linesHW.RemoveAt(index);
+                    break;
+                case "Accessories":
+                    this.linesAcc.RemoveAt(index);
+                    break;
+                case "Software":
+                    this.linesSW.RemoveAt(index);
+                    break;
+                case "ContentCreation":
+                    this.linesCC.RemoveAt(index);
+                    break;
+                case "Installation":
+                    this.linesInst.RemoveAt(index);
+                    break;
+                case "Recurring":
+                    this.linesRec.RemoveAt(index);
+                    break;
+            }
+        }
 
-            return this;
+        public double TotalLines(string category)
+        {
+            double total = 0;
+
+            switch (category)
+            {
+                case "Hardware":
+                    foreach (LineItem line in linesHW)
+                        total += line.Total;
+                    break;
+                case "Accessories":
+                    foreach (LineItem line in linesAcc)
+                        total += line.Total;
+                    break;
+                case "Software":
+                    foreach (LineItem line in linesSW)
+                        total += line.Total;
+                    break;
+                case "ContentCreation":
+                    foreach (LineItem line in linesCC)
+                        total += line.Total;
+                    break;
+                case "Installation":
+                    foreach (LineItem line in linesInst)
+                        total += line.Total;
+                    break;
+                case "Recurring":
+                    foreach (LineItem line in linesRec)
+                        total += line.Total;
+                    break;
+            }
+
+            return total;
+        }
+
+        public double GetGrandTotal()
+        {
+            return
+               TotalLines("Hardware") +
+               TotalLines("Accessories") +
+               TotalLines("Software") +
+               TotalLines("ContentCreation") +
+               TotalLines("Installation") +
+               TotalLines("Recurring");
+        }
+
+        public double GetGrandMargin()
+        {
+            double grandCost =0;
+
+            foreach(LineItem line in linesHW)
+                grandCost += line.Product.Cost*line.Quantity;
+            foreach (LineItem line in linesAcc)
+                grandCost += line.Product.Cost * line.Quantity;
+            foreach (LineItem line in linesSW)
+                grandCost += line.Product.Cost * line.Quantity;
+            foreach (LineItem line in linesCC)
+                grandCost += line.Product.Cost * line.Quantity;
+            foreach (LineItem line in linesInst)
+                grandCost += line.Product.Cost * line.Quantity;
+            foreach (LineItem line in linesRec)
+                grandCost += line.Product.Cost * line.Quantity;
+
+            return GetGrandTotal() - grandCost;
         }
 
     }

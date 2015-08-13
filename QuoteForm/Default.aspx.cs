@@ -16,6 +16,7 @@ using Spire.Pdf;
 using Spire.Pdf.Graphics;
 using Spire.Pdf.Tables;
 using Spire.Pdf.Grid;
+using System.Web.Http;
 
 namespace QuoteForm
 {   
@@ -25,123 +26,44 @@ namespace QuoteForm
         Quote quote;
         string QuoteID;
 
-        List<LineItem> linesHW = new List<LineItem>();
-        List<LineItem> linesAcc = new List<LineItem>();
-        List<LineItem> linesSW = new List<LineItem>();
-        List<LineItem> linesCC = new List<LineItem>();
-        List<LineItem> linesInst = new List<LineItem>();
-
         protected void Page_Load(Object sender, EventArgs e)
-        {
-            List<Quote> DBquotes = session.Query<Quote>()
+        {    
+            quote = session.Query<Quote>()
                 .Customize(x => x.WaitForNonStaleResultsAsOfLastWrite())
-                .ToList();
+                .FirstOrDefault(x => x.IsActive);
+            QuoteID = quote.Id;
 
-            foreach (Quote q in DBquotes)
-            {
-                if (q.IsActive)
-                {
-                    QuoteID = q.Id;
-                    quote = session.Load<Quote>(q.Id);
-                    
-                }
-            }
-
-            foreach (EnumCategories c in Enum.GetValues(typeof(EnumCategories)))
-            {
-                ListItem item = new ListItem(c.Humanize(), c.ToString());
-                HardwareCatDDL.Items.Add(item);
-            }
-            
             if (QuoteID == null) NewQuote();
-
+            
+            
             if (!IsPostBack)
             {
-                foreach(LineItem line in quote.Lines)
-                {
-                    switch(line.Product.Category)
-                    {
-                        case "MediaPlayers":
-                            linesHW.Add(line);
-                            break;
-                        case "IndoorDisplays":
-                            linesHW.Add(line);
-                            break;
-                        case "OutDoorDisplays":
-                            linesHW.Add(line);
-                            break;
-                        case "DataCables":
-                            linesAcc.Add(line);
-                            break;
-                        case "AVCables":
-                            linesAcc.Add(line);
-                            break;
-                        case "ExtendersConverters":
-                            linesAcc.Add(line);
-                            break;
-                        case "Splitters":
-                            linesAcc.Add(line);
-                            break;
-                        case "Speakers":
-                            linesAcc.Add(line);
-                            break;
-                        case "UPSBatteries":
-                            linesAcc.Add(line);
-                            break;
-                        case "InstallAccessories":
-                            linesAcc.Add(line);
-                            break;
-                        case "MountsAccessories":
-                            linesAcc.Add(line);
-                            break;
-                        case "SoftwareVitalcast":
-                            linesSW.Add(line);
-                            break;
-                        case "SoftwareQuickcom":
-                            linesSW.Add(line);
-                            break;
-                        case "SoftwareDashboard":
-                            linesSW.Add(line);
-                            break;
-                        case "ContentCreation":
-                            linesCC.Add(line);
-                            break;
-                        case "HostingServices":
-                            linesCC.Add(line);
-                            break;
-                        case "Installation":
-                            linesInst.Add(line);
-                            break;
-                        case "Warranties":
-                            linesSW.Add(line);
-                            break;
-                    }
-                }
-
                 LoadQuote(QuoteID);
-                repHW.DataSource = linesHW; //TODO: need to filter to only show appropriate lines (ListItem.Product.Category == HW)
+                repHW.DataSource = quote.linesHW;
                 repHW.DataBind();
 
-                repAcc.DataSource = linesAcc;
+                repAcc.DataSource = quote.linesAcc;
                 repAcc.DataBind();
 
-                repSW.DataSource = linesSW;
+                repSW.DataSource = quote.linesSW;
                 repSW.DataBind();
 
-                repCC.DataSource = linesCC;
+                repCC.DataSource = quote.linesCC;
                 repCC.DataBind();
 
-                repInst.DataSource = linesInst;
+                repInst.DataSource = quote.linesInst;
                 repInst.DataBind();
+
+                repRec.DataSource = quote.linesRec;
+                repRec.DataBind();
             }
         }
 
         protected void LoadQuote(string ID)
         {
-            if (quote.Date == "") quote.Date = DateTime.Today.ToShortDateString();
-
             Owner.Text       = quote.Owner;
             Date.Text        = quote.Date;
+            if (Date.Text == "") Date.Text = DateTime.Today.ToShortDateString();
             if (quote.QuoteLength == 0) QuoteLength.Text = "";
             else QuoteLength.Text = quote.QuoteLength.ToString();
 
@@ -175,23 +97,37 @@ namespace QuoteForm
             ShipPhone.Text      = quote.Shipping.Phone;
             ShipEmail.Text      = quote.Shipping.Email;
 
-            SourceDDL.SelectedIndex = -1;
             SourceDDL.SelectedValue = quote.Source;
             SpecificSource.Text     = quote.SpecificSource;
             if (quote.LocationCount == 0) LocationCount.Text = "";
                 else LocationCount.Text      = quote.LocationCount.ToString();
             POSProvidor.Text        = quote.POSProvidor;
             InstallDate.Text        = quote.InstallDate;
-
-            BusinessUnitDDL.SelectedIndex = -1;
             BusinessUnitDDL.SelectedValue = quote.BusinessUnit;
 
             NewLocation.Checked = quote.NewLocation;
             Dealer.Checked      = quote.Dealer;
-            TaxExempt.Checked   = quote.TaxExempt;
+            TaxStatusDDL.SelectedValue = quote.TaxExempt;
+            
+
+            //TOTALS SECTION
+            HWtotalCell.Text    = quote.TotalLines("Hardware").ToString();
+            ACCtotalCell.Text   = quote.TotalLines("Accessories").ToString();
+            SWtotalCell.Text    = quote.TotalLines("Software").ToString();
+            CCtotalCell.Text    = quote.TotalLines("ContentCreation").ToString();
+            INSTtotalCell.Text  = quote.TotalLines("Installation").ToString();
+            RECtotalCell.Text   = quote.TotalLines("Hardware").ToString();
+            TotalCell.Text      = quote.GetGrandTotal().ToString();
+
+            if (quote.Freight == 0) Freight.Text = "";
+                else Freight.Text = quote.Freight.ToString();
+            if (quote.SalesTax == 0) SalesTax.Text = "";
+                else SalesTax.Text = quote.SalesTax.ToString();
+
+            InternalNotes.InnerText = quote.InternalNotes;
+            ExternalNotes.InnerText = quote.ExternalNotes;
 
         }
-
         protected void SaveQuote(Object source, EventArgs e)
         {
             if (quote == null)
@@ -245,39 +181,41 @@ namespace QuoteForm
 
                 quote.NewLocation = NewLocation.Checked;
                 quote.Dealer = Dealer.Checked;
-                quote.TaxExempt = TaxExempt.Checked;
+
+                quote.TaxExempt = TaxStatusDDL.SelectedValue;
+
+                if (Freight.Text != "") quote.Freight = Convert.ToDouble(Freight.Text);
+                if (SalesTax.Text != "") quote.SalesTax = Convert.ToDouble(SalesTax.Text);
+
+                quote.InternalNotes = InternalNotes.InnerText;
+                quote.ExternalNotes = ExternalNotes.InnerText;
             }
 
             session.SaveChanges();
         }
-
         protected void CopyQuote(Object source, EventArgs e)
         {
             Quote temp = new Quote(quote);
             quote.IsActive = false;
 
-            temp.Lines = quote.Lines;
             temp.IsActive = true;
             session.Store(temp);
 
             session.SaveChanges();
         }
-
         protected void NewQuote(Object source, EventArgs e) {NewQuote();} 
-
-        protected void NewQuote()
+            protected void NewQuote()
         {
-            if(quote != null) quote.IsActive = false;
+            if(quote != null) 
+                quote.IsActive = false;
+            quote = new Quote();
+                quote.IsActive = true;
+                QuoteID = quote.Id;
 
-            Quote temp = new Quote();
-            temp.IsActive = true;
-            session.Store(temp);
-
+            session.Store(quote);
             session.SaveChanges();
-
             Response.Redirect(Request.RawUrl);
         }
-
         protected void PDFQuote(Object source, EventArgs e)
         {//demos: http://www.e-iceblue.com/Tutorials/Spire.PDF/Demos.html //had to add permissions to IIS Express Folder for Network Users
 
@@ -289,11 +227,15 @@ namespace QuoteForm
             //formatting helpers
             PdfStringFormat centered = new PdfStringFormat(PdfTextAlignment.Center);
             PdfStringFormat rightAlign = new PdfStringFormat(PdfTextAlignment.Right);
-            PdfFont helv24 = new PdfFont(PdfFontFamily.Helvetica, 24f);
-            PdfFont helv18 = new PdfFont(PdfFontFamily.Helvetica, 18f);
+            PdfFont helv24 = new PdfFont(PdfFontFamily.Helvetica, 24f, PdfFontStyle.Bold);
+            PdfFont helv20 = new PdfFont(PdfFontFamily.Helvetica, 20f, PdfFontStyle.Bold);
+            PdfFont helv16 = new PdfFont(PdfFontFamily.Helvetica, 16f, PdfFontStyle.Bold);
             PdfFont helv14 = new PdfFont(PdfFontFamily.Helvetica, 14f);
             PdfFont helv12 = new PdfFont(PdfFontFamily.Helvetica, 12f);
+            PdfFont helv12Bold = new PdfFont(PdfFontFamily.Helvetica, 12f, PdfFontStyle.Bold);
             PdfFont helv11 = new PdfFont(PdfFontFamily.Helvetica, 11f);
+            PdfFont helv9Ital = new PdfFont(PdfFontFamily.Helvetica, 9f, PdfFontStyle.Italic);
+            PdfFont helv8  = new PdfFont(PdfFontFamily.Helvetica, 8f);
             PdfBrush black = new PdfSolidBrush(Color.Black);
             SizeF size;
 
@@ -316,8 +258,8 @@ namespace QuoteForm
             page.Canvas.DrawString("Date: " + quote.Date, helv12, black, pageWidth, y, rightAlign);
                 size = helv12.MeasureString(quote.Owner);
                 y += size.Height + 5;
-            page.Canvas.DrawString(title, helv18, black, pageWidth / 2, y, centered);
-                size = helv18.MeasureString(title);
+            page.Canvas.DrawString(title, helv20, black, pageWidth / 2, y, centered);
+                size = helv20.MeasureString(title);
                 y += size.Height + 5;
 
             //ADDRESS TABLE
@@ -331,7 +273,7 @@ namespace QuoteForm
                       "Contact;"+quote.Customer.Contact+";"+quote.Billing.Contact+";"+quote.Shipping.Contact,
                       "Company;"+quote.Customer.Company+";"+quote.Billing.Company+";"+quote.Shipping.Company,
                       "Address1;"+quote.Customer.Address1+";"+quote.Billing.Address1+";"+quote.Shipping.Address1,
-                      "Address2;"+quote.Customer.Address2+";"+quote.Billing.Address1+";"+quote.Shipping.Address2,
+                      "Address2;"+quote.Customer.Address2+";"+quote.Billing.Address2+";"+quote.Shipping.Address2,
                       "City/State/Zip;"+quote.Customer.CityState+";"+quote.Billing.CityState+";"+quote.Shipping.CityState,
                       "Phone;"+quote.Customer.Phone+";"+quote.Billing.Phone+";"+quote.Shipping.Phone,
                       "Fax;"+quote.Customer.Fax+";"+quote.Billing.Fax+";"+quote.Shipping.Fax,
@@ -364,11 +306,20 @@ namespace QuoteForm
             detailsTable.Style.DefaultStyle.StringFormat = centered;
             width = page.Canvas.ClientSize.Width - (detailsTable.Columns.Count + 1) * detailsTable.Style.BorderPen.Width;
 
+            //converting t/f to y/n
+            string NewLocation, Dealer, TaxExempt;
+            if (quote.NewLocation) NewLocation = "Yes";
+                else NewLocation = "No";
+            if (quote.Dealer) Dealer = "Yes";
+                else Dealer = "No";
+            if (quote.TaxExempt == "exempt") TaxExempt = "Yes";
+                else TaxExempt = "No";
+
             string[] detailsData
                 = {
                       "Source: ;"+quote.Source+";Source Specific: ;"+quote.SpecificSource+";No. Of Locations: ;"+quote.LocationCount,
                       "POS Provider: ;"+quote.POSProvidor+";Install Date: ;"+quote.InstallDate+";Business Unit: ;"+quote.BusinessUnit,
-                      "NewLocation: ;"+quote.NewLocation+";Dealer: ;"+quote.Dealer+";Tax Exempt: ;"+quote.TaxExempt
+                      "New Location: ;"+NewLocation+";Dealer: ;"+Dealer+";Tax Exempt: ;"+TaxExempt
                   };
 
             string[][] detailsDataSource = new string[detailsData.Length][];
@@ -388,6 +339,137 @@ namespace QuoteForm
             y += detailsResult.Bounds.Height + 5;
 
             //QUOTE LINES
+            if(quote.linesHW.Count > 0)
+            {
+                page.Canvas.DrawString("Hardware", helv16, black, pageWidth / 2, y, centered);
+                    size = helv14.MeasureString("Hardware");
+                    y += size.Height + 2;
+                y += (buildPdfLines(page, quote.linesHW,"Hardware", y)).Bounds.Height + 2;
+            }
+
+            if(quote.linesAcc.Count > 0)
+            {
+                page.Canvas.DrawString("Accessories", helv16, black, pageWidth / 2, y, centered);
+                    size = helv14.MeasureString("Hardware Accessories");
+                    y += size.Height + 2;
+                y += (buildPdfLines(page, quote.linesAcc,"Accessories", y)).Bounds.Height + 2;
+            }
+            
+            if(quote.linesSW.Count > 0)
+            {
+                page.Canvas.DrawString("Software", helv16, black, pageWidth / 2, y, centered);
+                    size = helv16.MeasureString("Software & Maintenance");
+                    y += size.Height + 2;
+                y += (buildPdfLines(page, quote.linesSW,"Software", y)).Bounds.Height + 2;
+            }
+
+            if(quote.linesCC.Count > 0)
+            {
+                page.Canvas.DrawString("Content", helv16, black, pageWidth / 2, y, centered);
+                    size = helv16.MeasureString("Content");
+                    y += size.Height + 2;
+                y += (buildPdfLines(page, quote.linesCC,"Content", y)).Bounds.Height + 2;
+            }
+            
+            if(quote.linesInst.Count > 0)
+            {
+                page.Canvas.DrawString("Installation", helv16, black, pageWidth / 2, y, centered);
+                    size = helv16.MeasureString("Installation");
+                    y += size.Height + 2;
+                y += (buildPdfLines(page, quote.linesInst, "Installation", y)).Bounds.Height + 2;
+            }
+
+            if (quote.linesRec.Count > 0)
+            {
+                page.Canvas.DrawString("Recurring", helv16, black, pageWidth / 2, y, centered);
+                size = helv16.MeasureString("Recurring");
+                y += size.Height + 2;
+                y += (buildPdfLines(page, quote.linesRec, "Recurring", y)).Bounds.Height + 2;
+            }
+
+            bool FreightExists = false; if (quote.Freight > 0) FreightExists = true;
+            bool SalesTaxExists = false; if (quote.SalesTax > 0) SalesTaxExists = true;
+            double GrandTotal = quote.GetGrandTotal();
+
+            //NOTES
+            if (quote.ExternalNotes.Length > 0)
+            {
+                string notes = quote.ExternalNotes;
+                PdfStringLayouter layouter = new PdfStringLayouter();
+                PdfStringFormat format = new PdfStringFormat();
+                format.LineSpacing = helv11.Size * 1.5f;
+
+                PdfStringLayoutResult result = layouter.Layout(notes, helv11, format, new SizeF(pageWidth, y));
+
+                page.Canvas.DrawString("Notes", helv14, black, pageWidth / 2, y, centered);
+                size = helv14.MeasureString("LULZ");
+                y += size.Height + 2;
+
+
+                foreach (LineInfo line in result.Lines)
+                {
+                    page.Canvas.DrawString(line.Text, helv11, black, 0, y, format);
+                    y = y + result.LineHeight;
+                }
+
+            }
+
+            y += 5;
+            page.Canvas.DrawLine(new PdfPen(PdfBrushes.Black, .5f), new PointF(0, y), new PointF(pageWidth, y));
+            y += 5;
+                
+            if(FreightExists || SalesTaxExists)
+            {
+                page.Canvas.DrawString("Subtotal: $" + GrandTotal.ToString(), helv12, black, 0, y);
+            }
+            if(FreightExists)
+            {
+                page.Canvas.DrawString("Freight: $" + quote.Freight.ToString(), helv12, black, pageWidth/4, y);
+                GrandTotal += quote.Freight;
+            }
+            if (SalesTaxExists)
+            {
+                page.Canvas.DrawString("SalesTax: $" + quote.SalesTax.ToString(), helv12, black, pageWidth / 2, y);
+                GrandTotal += quote.SalesTax;
+            }
+
+            page.Canvas.DrawString("$" + GrandTotal.ToString(), helv12Bold, black, pageWidth, y, rightAlign);
+                size = helv12Bold.MeasureString("999999");
+                page.Canvas.DrawString("Total: ", helv12Bold, black, pageWidth - size.Width, y, rightAlign);
+
+            y += size.Height + 5;
+            page.Canvas.DrawLine(new PdfPen(PdfBrushes.Black, .5f), new PointF(0, y), new PointF(pageWidth, y));
+            y += 5;
+
+            //FINE PRINT
+            page.Canvas.DrawString("Quote is good for: " + quote.QuoteLength + " days", helv8, black, 0, y);
+            page.Canvas.DrawString("F.O.B. College Station, TX", helv8, black, pageWidth / 2, y, centered);
+            page.Canvas.DrawString("Payment Terms: " + quote.PaymentTerms, helv8, black, pageWidth, y, rightAlign);
+                size = helv8.MeasureString("THESE WORDS DON'T MATTER");
+                y += size.Height + 1;
+
+            page.Canvas.DrawString("This is not an invoice and may not include freight and/or sales tax. An invoice will be sent upon receipt of the signed quote.", helv9Ital, black, pageWidth/2, y, centered);
+                size = helv9Ital.MeasureString("ONLY DEVS WILL SEE THIS");
+                y += size.Height + 10;
+
+            page.Canvas.DrawString("Please sign to accept this quotation: ", helv8, black, 0, y);
+                size = helv8.MeasureString("I CAN SAY WHATEVER I WANT");
+                page.Canvas.DrawLine(new PdfPen(PdfBrushes.Black, .5f), new PointF(150, y+size.Height), new PointF(350, y+size.Height));
+                y += size.Height + 1;
+
+            page.Canvas.DrawString("By signing I agree that I have read, understand and agree to be bound by the Texas Digital Standard Terms and Conditions Applicable to", helv8, black, 0, y);
+                size = helv8.MeasureString("PAY UP GUY");
+                y += size.Height + 1;
+            
+            page.Canvas.DrawString("Quotes and Purchase Orders accessible at: ", helv8, black, 0, y);
+                size = helv8.MeasureString("Quotes and Purchase Orders accessible at: ");
+                page.Canvas.DrawString("http://www.ncr.com/wp-content/uploads/TXDigital_Terms_and_Conditions.pdf", helv8, PdfBrushes.DarkGreen, size.Width, y);
+                y += size.Height + 1;
+
+            page.Canvas.DrawString("After signing please fax to (979) 764-8650", helv8, black, 0, y);
+            page.Canvas.DrawString("Delivery ARO: 45-60 days", helv8, black, pageWidth, y, rightAlign);
+                size = helv8.MeasureString("THIS ISNT THE END LOL");
+                y += size.Height + 1;
 
             
             pdf.SaveToFile("HelloWorld.pdf");
@@ -397,6 +479,84 @@ namespace QuoteForm
 
         }
 
+        protected PdfLayoutResult buildPdfLines(PdfPageBase page, List<LineItem> list, string category, float y)
+        {
+
+            PdfFont helv14 = new PdfFont(PdfFontFamily.Helvetica, 14f);
+            PdfFont helv12 = new PdfFont(PdfFontFamily.Helvetica, 12f);
+            PdfFont helv11 = new PdfFont(PdfFontFamily.Helvetica, 11f);
+
+            PdfTable LinesTable = new PdfTable();
+            LinesTable.Style.CellPadding = 1;
+            LinesTable.Style.DefaultStyle.Font = helv11;
+            
+            List<string> data = new List<string>();
+            double subtotal = 0;
+
+            if(category == "Recurring")
+                data.Add("Product;Part Number;Monthly Rate;Quantity;Price");
+            else
+                data.Add("Product;Part Number;Unit Price;Quantity;Price");
+            foreach (LineItem line in list)
+            {
+                data.Add(line.Product.Name + ";" + line.Product.PartNumber + ";$" + line.Product.Price + ";" + line.Quantity + ";$" + line.Total);
+                subtotal += line.Total;
+            } data.Add(";;; Subtotal: ;$" + subtotal.ToString());
+
+
+            string[][] dataSource = new string[data.Count][];
+            for (int i = 0; i < data.Count; i++)
+                dataSource[i] = data[i].Split(';');
+
+            LinesTable.DataSource = dataSource;
+
+            LinesTable.BeginRowLayout += new BeginRowLayoutEventHandler(LinesTable_BeginRowLayout);
+
+            LinesTable.Columns[1].StringFormat = new PdfStringFormat(PdfTextAlignment.Right);
+            LinesTable.Columns[2].StringFormat = new PdfStringFormat(PdfTextAlignment.Right);
+            LinesTable.Columns[3].StringFormat = new PdfStringFormat(PdfTextAlignment.Right);
+            LinesTable.Columns[4].StringFormat = new PdfStringFormat(PdfTextAlignment.Right);
+
+
+            float width = page.Canvas.ClientSize.Width;
+            for (int i = 0; i < LinesTable.Columns.Count; i++)
+            {
+                if (i == 0)
+                    LinesTable.Columns[i].Width = width * .1f * width;
+                else
+                    LinesTable.Columns[i].Width = width * .045f * width;
+            }
+
+            return LinesTable.Draw(page, new PointF(0, y));
+            
+        }
+        static void LinesTable_BeginRowLayout(object sender, BeginRowLayoutEventArgs args)
+        {
+            PdfFont helv11 = new PdfFont(PdfFontFamily.Helvetica, 11f);
+            PdfFont helv12Bold = new PdfFont(PdfFontFamily.Helvetica, 12f, PdfFontStyle.Bold);
+            PdfStringFormat centered = new PdfStringFormat(PdfTextAlignment.Center);
+            PdfBrush gray = new PdfSolidBrush(Color.LightGray);
+            PdfBrush clear = new PdfSolidBrush(Color.Transparent);
+
+            args.CellStyle.BorderPen = new PdfPen(Color.Transparent);
+            args.CellStyle.BackgroundBrush = clear;
+
+
+            if(args.RowIndex == 0)
+            {
+                //header
+                args.CellStyle.Font = helv12Bold;
+
+            }
+            else 
+                args.CellStyle.Font = helv11;
+                
+            if(args.RowIndex % 2 != 0)
+            {
+                args.CellStyle.BackgroundBrush = gray;
+            }
+        }
+        
         static void addressTable_BeginRowLayout(object sender, BeginRowLayoutEventArgs args)
         {
 
@@ -409,7 +569,7 @@ namespace QuoteForm
                 //header
                 args.CellStyle.Font = helv12;
                 args.CellStyle.StringFormat = centered;
-                args.CellStyle.BackgroundBrush = PdfBrushes.GreenYellow;
+                args.CellStyle.BackgroundBrush = PdfBrushes.LightGray;
             }
             else
             {
@@ -419,61 +579,168 @@ namespace QuoteForm
             }
         }
 
-        protected void HardwareCatDDL_IndexChanged(Object source, EventArgs e)
+        public void BillingAutoFill(Object source, EventArgs e)
         {
-                HardwareProdDDL.Items.Clear();
-                HardwareProdDDL.Items.Add("--Select a Product--");
-                HardwareProdDDL.AppendDataBoundItems = true;
-
-                List<Product> prods = session.Query<Product>().Where(x => x.Category == Enum.GetName(typeof(EnumCategories),HardwareCatDDL.SelectedIndex)).ToList();
-
-                foreach (Product p in prods)
-                {
-                    HardwareProdDDL.Items.Add(new ListItem(p.Name, p.Name));
-                }
-        }
-
-        protected void HardwareProdDDL_IndexChanged(Object source, EventArgs e)
-        {
-            List<Product> results = session.Query<Product>().Where(x => (x.Category == HardwareCatDDL.SelectedValue) &&
-                                                                        (x.Name == HardwareProdDDL.SelectedValue)).ToList();
-            Product p = results[0];
-
-            PartNumber.Text = p.PartNumber.ToString();
-            UnitPrice.Text = p.Price.ToString();
-            //TODO: add default quantity values to product model & products view
-        }
-
-        protected void SaveLineItem(Object source, EventArgs e)
-        {
-            List<Product> results = session.Query<Product>()
-                .Where(x => x.PartNumber == Convert.ToInt32(PartNumber.Text)).ToList();
-
-            LineItem line = new LineItem();
-                line.Product       = new Product(results[0]);
-                line.Product.Price = Convert.ToInt32(UnitPrice.Text);
-                line.Quantity      = Convert.ToInt32(Quantity.Text);
-
-            quote.AddLineItem(line);
-
+            quote.Billing = quote.Customer;
             session.SaveChanges();
 
             Response.Redirect(Request.RawUrl);
         }
 
-        protected void rep_ItemCommand(Object source, CommandEventArgs e)
+        public void ShippingAutoFill(Object source, EventArgs e)
+        {
+            quote.Shipping = quote.Customer;
+            session.SaveChanges();
+
+            Response.Redirect(Request.RawUrl);
+        }
+        
+        protected void ProductSelected(Object source, EventArgs e)
+        {
+            ComboBox temp = (ComboBox)source;
+            
+            List<Product> results = session.Query<Product>()
+                .Where(x => x.Name == temp.Text)
+                .ToList(); 
+
+            if(results.Count > 0)
+            {
+                Product p = results[0];
+
+                var repParent = temp.NamingContainer;
+
+                TextBox partNum     = (TextBox)repParent.FindControl("AddPartNumber");
+                TextBox unitPrice   = (TextBox)repParent.FindControl("AddUnitPrice");
+                TextBox quantity    = (TextBox)repParent.FindControl("AddQuantity");
+
+                partNum.Text        = p.PartNumber.ToString();
+                unitPrice.Text      = p.Price.ToString();
+                quantity.Text       = p.DefaultQuantity.ToString();
+
+            }
+        }
+
+        protected void TaxStatusValidation(Object source, ServerValidateEventArgs e)
+        {
+            if(TaxStatusDDL.SelectedValue == null)
+            {
+                e.IsValid = false;
+                return;
+            }
+            else
+            {
+                e.IsValid = true;
+                return;
+            }
+        }
+
+        protected void rep_ItemCommand(Object source, RepeaterCommandEventArgs e)
         {
             if (e.CommandName == "Delete")
             {
                 int index = Convert.ToInt32(e.CommandArgument);
+                string category = ((HiddenField)e.Item.FindControl("Category")).Value.ToString();
 
-                quote.Lines.RemoveAt(index);
+                quote.RemoveLineItem(category,index);
                 session.Store(quote);
                 session.SaveChanges();
 
                 Response.Redirect(Request.RawUrl);
             }
+            if(e.CommandName == "Add")
+            {
+                LineItem line = new LineItem();
+
+                line.Product.Category   = ((HiddenField)e.Item.FindControl("AddCategory")).Value.ToString();
+                line.Product.Name       = ((ComboBox)e.Item.FindControl("AddProduct")).SelectedValue.ToString();
+                line.Product.PartNumber = Convert.ToInt32(((TextBox)e.Item.FindControl("AddPartNumber")).Text);
+                line.Product.Price      = Convert.ToDouble(((TextBox)e.Item.FindControl("AddUnitPrice")).Text);
+                line.Quantity           = Convert.ToInt32(((TextBox)e.Item.FindControl("AddQuantity")).Text);
+                line.Total              = line.Product.Price * line.Quantity;
+
+                quote.AddLineItem(line);
+                session.SaveChanges();
+                Response.Redirect(Request.RawUrl);
+            }
         }
 
+        protected void LoadHardwareProducts(Object source, EventArgs e)
+        {
+            List<Product> prods = session.Query<Product>()
+                .Where(x => x.Category == "Hardware")
+                .ToList();
+
+            ComboBox temp = (ComboBox)source;
+
+            foreach(Product p in prods)
+            {
+                temp.Items.Add(p.Name);
+            }
+        }
+        protected void LoadAccessoriesProducts(Object source, EventArgs e)
+        {
+            List<Product> prods = session.Query<Product>()
+                .Where(x => x.Category == "Accessories")
+                .ToList();
+
+            ComboBox temp = (ComboBox)source;
+
+            foreach (Product p in prods)
+            {
+                temp.Items.Add(p.Name);
+            }
+        }
+        protected void LoadSoftwareProducts(Object source, EventArgs e)
+        {
+            List<Product> prods = session.Query<Product>()
+                .Where(x => x.Category == "Software")
+                .ToList();
+
+            ComboBox temp = (ComboBox)source;
+
+            foreach (Product p in prods)
+            {
+                temp.Items.Add(p.Name);
+            }
+        }
+        protected void LoadContentProducts(Object source, EventArgs e)
+        {
+            List<Product> prods = session.Query<Product>()
+                .Where(x => x.Category == "ContentCreation")
+                .ToList();
+
+            ComboBox temp = (ComboBox)source;
+
+            foreach (Product p in prods)
+            {
+                temp.Items.Add(p.Name);
+            }
+        }
+        protected void LoadInstallProducts(Object source, EventArgs e)
+        {
+            List<Product> prods = session.Query<Product>()
+                .Where(x => x.Category == "Installation")
+                .ToList();
+
+            ComboBox temp = (ComboBox)source;
+
+            foreach (Product p in prods)
+            {
+                temp.Items.Add(p.Name);
+            }
+        }
+        protected void LoadRecurringProducts(Object source, EventArgs e)
+        {
+            List<Product> prods = session.Query<Product>()
+                .Where(x => x.Category == "Recurring")
+                .ToList();
+
+            ComboBox temp = (ComboBox)source;
+
+            foreach (Product p in prods)
+            {
+                temp.Items.Add(p.Name);
+            }
+        }
     }
 }

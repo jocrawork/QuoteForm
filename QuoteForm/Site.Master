@@ -37,8 +37,9 @@
                 <%--Site Scripts--%>
             </Scripts>
         </asp:ScriptManager>
+        
 
-        <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar navbar-fixed-top" style="background-color:darkgreen">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -46,17 +47,15 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" runat="server" href="~/">Quotatator</a>
+                    <a class="navbar-brand" runat="server" href="~/" style="color:white">QuoteForm</a>
                 </div>
                 <div class="navbar-collapse collapse float-right">
                     <ul class="nav navbar-nav">
-                        <li><a runat="server" href="~/Products">Products</a></li> 
-                        <li><a runat="server" href="~/Contact">Margin Analysis</a></li> 
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
                         <li><a runat="server" href="~/Quotes">Quotes</a></li>
+                        <li><a runat="server" href="~/Products">Products</a></li> 
+                        <li><a runat="server" href="~/Analysis">Margin Analysis</a></li> 
                     </ul>
-                    <!-- <asp:LoginView runat="server" ViewStateMode="Disabled">
+                    <asp:LoginView runat="server" ViewStateMode="Disabled">
                         <AnonymousTemplate>
                             <ul class="nav navbar-nav navbar-right">
                                 <li><a runat="server" href="~/Account/Register">Register</a></li>
@@ -65,13 +64,13 @@
                         </AnonymousTemplate>
                         <LoggedInTemplate>
                             <ul class="nav navbar-nav navbar-right">
-                                <li><a runat="server" href="~/Account/Manage" title="Manage your account">Hello, <%: Context.User.Identity.GetUserName()  %> !</a></li>
+                                <li><a runat="server" href="~/Account/Manage" title="Manage your account">Hello, !</a></li>
                                 <li>
                                     <asp:LoginStatus runat="server" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" OnLoggingOut="Unnamed_LoggingOut" />
                                 </li>
                             </ul>
                         </LoggedInTemplate>
-                    </asp:LoginView> -->
+                    </asp:LoginView>
                 </div>
             </div>
         </div>

@@ -121,6 +121,15 @@ namespace QuoteForm {
         protected global::System.Web.UI.WebControls.TextBox CustEmail;
         
         /// <summary>
+        /// BillingSame control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox BillingSame;
+        
+        /// <summary>
         /// BillContact control.
         /// </summary>
         /// <remarks>
@@ -193,6 +202,15 @@ namespace QuoteForm {
         protected global::System.Web.UI.WebControls.TextBox BillEmail;
         
         /// <summary>
+        /// ShippingSame control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox ShippingSame;
+        
+        /// <summary>
         /// ShipContact control.
         /// </summary>
         /// <remarks>
@@ -263,6 +281,42 @@ namespace QuoteForm {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox ShipEmail;
+        
+        /// <summary>
+        /// CustContactValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator CustContactValidator;
+        
+        /// <summary>
+        /// CustCompanyValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator CustCompanyValidator;
+        
+        /// <summary>
+        /// OwnerValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator OwnerValidator;
+        
+        /// <summary>
+        /// TaxStatusValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator TaxStatusValidator;
         
         /// <summary>
         /// SourceDDL control.
@@ -346,6 +400,15 @@ namespace QuoteForm {
         protected global::System.Web.UI.WebControls.CheckBox NewLocation;
         
         /// <summary>
+        /// TaxStatusDDL control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList TaxStatusDDL;
+        
+        /// <summary>
         /// Dealer control.
         /// </summary>
         /// <remarks>
@@ -353,15 +416,6 @@ namespace QuoteForm {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox Dealer;
-        
-        /// <summary>
-        /// TaxExempt control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox TaxExempt;
         
         /// <summary>
         /// SaveQuoteB1 control.
@@ -436,94 +490,103 @@ namespace QuoteForm {
         protected global::System.Web.UI.WebControls.Repeater repInst;
         
         /// <summary>
-        /// ModalPopupHW control.
+        /// repRec control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AjaxControlToolkit.ModalPopupExtender ModalPopupHW;
+        protected global::System.Web.UI.WebControls.Repeater repRec;
         
         /// <summary>
-        /// HardwarePanel control.
+        /// TotalsTable control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel HardwarePanel;
+        protected global::System.Web.UI.WebControls.Table TotalsTable;
         
         /// <summary>
-        /// HardwareUpdatePanel control.
+        /// HWtotalCell control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel HardwareUpdatePanel;
+        protected global::System.Web.UI.WebControls.TableCell HWtotalCell;
         
         /// <summary>
-        /// HardwareCatDDL control.
+        /// ACCtotalCell control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList HardwareCatDDL;
+        protected global::System.Web.UI.WebControls.TableCell ACCtotalCell;
         
         /// <summary>
-        /// HardwareProdDDL control.
+        /// SWtotalCell control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList HardwareProdDDL;
+        protected global::System.Web.UI.WebControls.TableCell SWtotalCell;
         
         /// <summary>
-        /// PartNumber control.
+        /// CCtotalCell control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PartNumber;
+        protected global::System.Web.UI.WebControls.TableCell CCtotalCell;
         
         /// <summary>
-        /// UnitPrice control.
+        /// INSTtotalCell control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox UnitPrice;
+        protected global::System.Web.UI.WebControls.TableCell INSTtotalCell;
         
         /// <summary>
-        /// Quantity control.
+        /// RECtotalCell control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Quantity;
+        protected global::System.Web.UI.WebControls.TableCell RECtotalCell;
         
         /// <summary>
-        /// Warranties control.
+        /// TotalCell control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox Warranties;
+        protected global::System.Web.UI.WebControls.TableCell TotalCell;
         
         /// <summary>
-        /// SubmitHardware control.
+        /// Freight control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SubmitHardware;
+        protected global::System.Web.UI.WebControls.TextBox Freight;
+        
+        /// <summary>
+        /// SalesTax control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox SalesTax;
         
         /// <summary>
         /// NewQuoteB2 control.
@@ -542,6 +605,24 @@ namespace QuoteForm {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button CopyQuoteB2;
+        
+        /// <summary>
+        /// InternalNotes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTextArea InternalNotes;
+        
+        /// <summary>
+        /// ExternalNotes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTextArea ExternalNotes;
         
         /// <summary>
         /// SaveQuoteB2 control.

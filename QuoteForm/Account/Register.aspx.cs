@@ -6,9 +6,11 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Owin;
 using QuoteForm.Models;
+using System.Web.Http;
 
 namespace QuoteForm.Account
 {
+    [AllowAnonymous]
     public partial class Register : Page
     {
         protected void CreateUser_Click(object sender, EventArgs e)

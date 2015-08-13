@@ -1,21 +1,26 @@
 ﻿using System;
 using System.Web;
 using System.Web.UI;
+using System.Linq;
+using System.Collections.Generic;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Owin;
 using QuoteForm.Models;
+using System.Web.Http;
 
 namespace QuoteForm.Account
 {
+    [AllowAnonymous]
     public partial class Login : Page
     {
+        [AllowAnonymous]
         protected void Page_Load(object sender, EventArgs e)
         {
             RegisterHyperLink.NavigateUrl = "Register";
             // Enable this once you have account confirmation enabled for password reset functionality
             //ForgotPasswordHyperLink.NavigateUrl = "Forgot";
-            OpenAuthLogin.ReturnUrl = Request.QueryString["ReturnUrl"];
+            //OpenAuthLogin.ReturnUrl = Request.QueryString["ReturnUrl"]; //I believe this is for social logins only
             var returnUrl = HttpUtility.UrlEncode(Request.QueryString["ReturnUrl"]);
             if (!String.IsNullOrEmpty(returnUrl))
             {
@@ -23,6 +28,7 @@ namespace QuoteForm.Account
             }
         }
 
+        [AllowAnonymous]
         protected void LogIn(object sender, EventArgs e)
         {
             if (IsValid)

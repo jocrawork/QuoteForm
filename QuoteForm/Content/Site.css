@@ -36,3 +36,19 @@ input[type="select"] {
         padding: 0;
     }
 }
+
+input.required::-webkit-input-placeholder {
+   color: red;
+}
+
+input.required:-moz-placeholder { /* Firefox 18- */
+   color: red;  
+}
+
+input.required::-moz-placeholder {  /* Firefox 19+ */
+   color: red;  
+}
+
+input.required:-ms-input-placeholder {  
+   color: red;  
+}

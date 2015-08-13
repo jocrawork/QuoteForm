@@ -35,54 +35,16 @@ namespace QuoteForm
         [Description("--Select a Category--")]
         Default = 0,
         
-        [Description("Media Players")]
-        MediaPlayers,
+        Hardware,
 
-        [Description("Indoor Displays")]
-        IndoorDisplays,
+        Accessories,
 
-        [Description("Outdoor Displays")]
-        OutdoorDisplays,
+        Software,
 
-        [Description("Data Cables")]
-        DataCables,
-
-        [Description("Audio/Video Cables")]
-        AVCables,
-
-        [Description("Extenders/Converters")]
-        ExtendersConverters,
-        
-        Splitters,
-        
-        Speakers,
-
-        [Description("UPS Batteries")]
-        UPSBatteries,
-
-        [Description("Install Accessories")]
-        InstallAccessories,
-
-        [Description("Mounts & Accessories")]
-        MountsAccessories,
-
-        [Description("Software - VitalCast")]
-        SoftwareVitalcast,
-
-        [Description("Software - Quickcom")]
-        SoftwareQuickcom,
-
-        [Description("Software - Dashboard")]
-        SoftwareDashboard,
-
-        [Description("Content Creation")]
         ContentCreation,
 
-        [Description("Hosting Services")]
-        HostingServices,
-        
         Installation,
         
-        Warranties
+        Recurring
     }
 }

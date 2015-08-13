@@ -3823,8 +3823,9 @@ textarea.input-group-sm > .input-group-btn > .btn {
 
 .nav > li > a:hover,
 .nav > li > a:focus {
+  color: black;
   text-decoration: none;
-  background-color: #eeeeee;
+  background-color: lawngreen;
 }
 
 .nav > li.disabled > a {
@@ -4028,11 +4029,12 @@ textarea.input-group-sm > .input-group-btn > .btn {
   min-height: 50px;
   margin-bottom: 20px;
   border: 1px solid transparent;
+  background-color:darkgreen;
 }
 
 .navbar:before,
-.navbar:after {
-  display: table;
+.navbar:after display
+  {: table;
   content: " ";
 }
 
@@ -4374,6 +4376,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
   float: left;
   margin-top: 15px;
   margin-bottom: 15px;
+  color:white;
 }
 
 @media (min-width: 768px) {
@@ -4409,7 +4412,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 .navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-nav > li > a:focus {
   color: #333333;
-  background-color: transparent;
+  background-color: lightgreen;
 }
 
 .navbar-default .navbar-nav > .active > a,
@@ -6813,4 +6816,14 @@ td.visible-print {
   td.hidden-print {
     display: none !important;
   }
+}
+
+.nav li a {
+    color: white;
+    
+}
+
+nav.navbar-brand a
+{
+    color:white;
 }

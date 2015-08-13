@@ -10,78 +10,87 @@
 namespace QuoteForm {
     
     
-    public partial class Products {
+    public partial class Analysis {
         
         /// <summary>
-        /// CategoryDDL control.
+        /// repHW control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList CategoryDDL;
+        protected global::System.Web.UI.WebControls.Repeater repHW;
         
         /// <summary>
-        /// Name control.
+        /// repAcc control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Name;
+        protected global::System.Web.UI.WebControls.Repeater repAcc;
         
         /// <summary>
-        /// PartNumber control.
+        /// repSW control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PartNumber;
+        protected global::System.Web.UI.WebControls.Repeater repSW;
         
         /// <summary>
-        /// Price control.
+        /// repCC control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Price;
+        protected global::System.Web.UI.WebControls.Repeater repCC;
         
         /// <summary>
-        /// Cost control.
+        /// repInst control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Cost;
+        protected global::System.Web.UI.WebControls.Repeater repInst;
         
         /// <summary>
-        /// DefaultQuantity control.
+        /// repRec control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox DefaultQuantity;
+        protected global::System.Web.UI.WebControls.Repeater repRec;
         
         /// <summary>
-        /// Add control.
+        /// GrandTotal control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Add;
+        protected global::System.Web.UI.WebControls.Label GrandTotal;
         
         /// <summary>
-        /// repProducts control.
+        /// GrandMargin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater repProducts;
+        protected global::System.Web.UI.WebControls.Label GrandMargin;
+        
+        /// <summary>
+        /// GrandMarginPercent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label GrandMarginPercent;
     }
 }
