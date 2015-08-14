@@ -27,11 +27,26 @@ namespace QuoteForm
         string QuoteID;
 
         protected void Page_Load(Object sender, EventArgs e)
-        {    
+        {
+            /*
             quote = session.Query<Quote>()
                 .Customize(x => x.WaitForNonStaleResultsAsOfLastWrite())
                 .FirstOrDefault(x => x.IsActive);
             QuoteID = quote.Id;
+             */
+
+            List<Quote> DBquotes = session.Query<Quote>()
+            .Customize(x => x.WaitForNonStaleResultsAsOfLastWrite())
+            .ToList();
+
+            foreach (Quote q in DBquotes)
+            {
+                if (q.IsActive)
+                {
+                    QuoteID = q.Id;
+                    quote = session.Load<Quote>(q.Id);
+                }
+            }
 
             if (QuoteID == null) NewQuote();
             

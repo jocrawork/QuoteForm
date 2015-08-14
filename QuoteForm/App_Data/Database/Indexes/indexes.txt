@@ -1,2 +1,2 @@
-6 - Auto/Quotes
-7 - Auto/Products/ByCategoryAndNameAndPartNumber
+3 - Auto/Quotes/ByIsActive
+12 - Auto/Products/ByCategory
