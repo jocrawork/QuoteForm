@@ -13,6 +13,24 @@ namespace QuoteForm {
     public partial class Quotes {
         
         /// <summary>
+        /// myQuotes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button myQuotes;
+        
+        /// <summary>
+        /// allQuotes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button allQuotes;
+        
+        /// <summary>
         /// repQuotes control.
         /// </summary>
         /// <remarks>

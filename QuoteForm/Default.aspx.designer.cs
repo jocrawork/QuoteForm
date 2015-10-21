@@ -22,6 +22,15 @@ namespace QuoteForm {
         protected global::System.Web.UI.WebControls.TextBox Owner;
         
         /// <summary>
+        /// PhoneNumber control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox PhoneNumber;
+        
+        /// <summary>
         /// Date control.
         /// </summary>
         /// <remarks>
@@ -319,6 +328,15 @@ namespace QuoteForm {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator TaxStatusValidator;
         
         /// <summary>
+        /// DateValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator DateValidator;
+        
+        /// <summary>
         /// SourceDDL control.
         /// </summary>
         /// <remarks>
@@ -436,6 +454,15 @@ namespace QuoteForm {
         protected global::System.Web.UI.WebControls.Button PrintQuoteB1;
         
         /// <summary>
+        /// PdfFileName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField PdfFileName;
+        
+        /// <summary>
         /// AddLine control.
         /// </summary>
         /// <remarks>
@@ -452,15 +479,6 @@ namespace QuoteForm {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater repHW;
-        
-        /// <summary>
-        /// repAcc control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater repAcc;
         
         /// <summary>
         /// repSW control.
@@ -515,15 +533,6 @@ namespace QuoteForm {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TableCell HWtotalCell;
-        
-        /// <summary>
-        /// ACCtotalCell control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TableCell ACCtotalCell;
         
         /// <summary>
         /// SWtotalCell control.

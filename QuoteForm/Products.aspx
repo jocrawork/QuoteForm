@@ -12,6 +12,7 @@
         });
     </script>
 
+    <%if(User.IsInRole("Admin")||User.IsInRole("Products")){ %>
     <div class="well" style="text-align:center">    
         <asp:DropDownList ID="CategoryDDL" runat="server" />
         <asp:TextBox ID="Name" runat="server" placeholder="Name"/>
@@ -22,7 +23,7 @@
 
         <asp:Button class="btn btn-success" ID="Add" runat="server" Text="Add" OnClick="Add_Click" />
     </div>
-
+    <%} %>
     <div>
         <input type="text" id="Filter" placeholder="Search"/>
     </div>
@@ -33,7 +34,7 @@
             <HeaderTemplate>
                 <table id=products style="width:100%">
                     <thead>
-                        <tr style="font-weight: bold"><td>Category</td><td>Name</td><td>Part Number</td><td>Price</td><td>Cost</td><td>Qty</td><td>Modify</td></tr>
+                        <tr style="font-weight: bold"><td>Category</td><td>Name</td><td>Part Number</td><td>Price</td><td>Cost</td><td>Default Quantity</td><%if(User.IsInRole("Admin")||User.IsInRole("Products")){ %><td>Delete</td><%} %></tr>
                     </thead>
                     <tbody>
             </HeaderTemplate>
@@ -46,8 +47,9 @@
                         <td><asp:Label ID="Price" runat="server" Text='<%#Eval("Price") %>' /></td>
                         <td><asp:Label ID="Cost" runat="server" Text='<%#Eval("Cost") %>' /></td>
                         <td><asp:Label ID="DefaultQuantity" runat="server" Text='<%#Eval("DefaultQuantity") %>' /></td>
-                        <td><asp:Button ID="Edit" runat="server" Text="Edit" class="btn btn-primary" CommandName="Edit" disabled="disabled" CommandArgument='<%# Eval("Id") %>'/>
-                            <asp:Button ID="Delete" runat="server" Text="Delete" class="btn btn-danger" CommandName="Delete" CommandArgument='<%# Eval("Id") %>'/></td>
+                        <%if(User.IsInRole("Admin")||User.IsInRole("Products")){ %>
+                        <td><asp:Button ID="Delete" runat="server" Text="Delete" class="btn btn-danger" CommandName="Delete" CommandArgument='<%# Eval("Id") %>'/></td>
+                        <%} %>
                     </tr>
             </ItemTemplate>
             <FooterTemplate>

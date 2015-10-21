@@ -117,6 +117,7 @@ C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\Qu
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\QuoteForm.pdb
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\AjaxControlToolkit.dll
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\Antlr3.Runtime.dll
+C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\AspNet.Identity.RavenDB.dll
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\AspNet.ScriptManager.bootstrap.dll
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\AspNet.ScriptManager.jQuery.dll
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\EntityFramework.dll
@@ -221,6 +222,6 @@ C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\vi
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\zh-CN\Humanizer.resources.dll
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\zh-Hans\Humanizer.resources.dll
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\zh-Hant\Humanizer.resources.dll
-C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\obj\Debug\QuoteForm.csprojResolveAssemblyReference.cache
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\obj\Debug\QuoteForm.dll
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\obj\Debug\QuoteForm.pdb
+C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\obj\Debug\QuoteForm.csprojResolveAssemblyReference.cache

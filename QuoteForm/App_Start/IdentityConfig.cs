@@ -7,6 +7,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using QuoteForm.Models;
+using System.Net.Mail;
+using System.Windows.Forms;
 
 namespace QuoteForm
 {
@@ -14,7 +16,17 @@ namespace QuoteForm
     {
         public Task SendAsync(IdentityMessage message)
         {
-            // Plug in your email service here to send an email.
+            var client = new SmtpClient("192.127.251.82");
+            //using(var msg = new MailMessage("ProvisioningTool@ncr.com",message.Destination,message.Subject,message.Body))
+            using (var msg = new MailMessage("No.Reply@ncr.com", message.Destination, message.Subject, message.Body))
+            {
+                msg.IsBodyHtml = true;
+                //await client.SendMailAsync(msg); //not working, so not really async. iSorry
+
+                client.Send(msg); 
+                
+            }
+
             return Task.FromResult(0);
         }
     }
@@ -97,6 +109,21 @@ namespace QuoteForm
         public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)
         {
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
+        }
+    }
+
+    public class ApplicationRoleManager : RoleManager<IdentityRole>
+    {
+        public ApplicationRoleManager(IRoleStore<IdentityRole, string> roleStore)
+            : base(roleStore) { }
+
+        public static ApplicationRoleManager Create(
+            IdentityFactoryOptions<ApplicationRoleManager> options,
+            IOwinContext context)
+        {
+            var manager = new ApplicationRoleManager(
+                new RoleStore<IdentityRole>(context.Get<ApplicationDbContext>()));
+            return manager;
         }
     }
 }

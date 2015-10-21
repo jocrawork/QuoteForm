@@ -36,31 +36,19 @@ namespace QuoteForm.Account
         protected void Page_Load()
         {
             var manager = Context.GetOwinContext().GetUserManager<ApplicationUserManager>();
-
-            HasPhoneNumber = String.IsNullOrEmpty(manager.GetPhoneNumber(User.Identity.GetUserId()));
+            var user = manager.FindById(User.Identity.GetUserId());
 
             // Enable this after setting up two-factor authentientication
             //PhoneNumber.Text = manager.GetPhoneNumber(User.Identity.GetUserId()) ?? String.Empty;
-
-            TwoFactorEnabled = manager.GetTwoFactorEnabled(User.Identity.GetUserId());
-
-            LoginsCount = manager.GetLogins(User.Identity.GetUserId()).Count;
 
             var authenticationManager = HttpContext.Current.GetOwinContext().Authentication;
 
             if (!IsPostBack)
             {
-                // Determine the sections to render
-                if (HasPassword(manager))
-                {
-                    ChangePassword.Visible = true;
-                }
-                else
-                {
-                    CreatePassword.Visible = true;
-                    ChangePassword.Visible = false;
-                }
-
+                UserName.Text = user.UserName;
+                Email.Text = user.Email;
+                PhoneNumber.Text = user.PhoneNumber;
+                
                 // Render success message
                 var message = Request.QueryString["m"];
                 if (message != null)
@@ -80,6 +68,20 @@ namespace QuoteForm.Account
             }
         }
 
+        protected void SaveAccount(Object source, EventArgs e)
+        {
+            var manager = Context.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            var user = manager.FindById(User.Identity.GetUserId());
+
+            user.UserName = UserName.Text;
+            user.Email = Email.Text;
+            user.PhoneNumber = PhoneNumber.Text;
+
+            manager.Update(user);
+            Context.GetOwinContext().Get<ApplicationDbContext>().SaveChanges();
+
+            Response.Redirect(Request.RawUrl);
+        }
 
         private void AddErrors(IdentityResult result)
         {

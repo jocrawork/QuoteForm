@@ -15,16 +15,26 @@
                 <h4>Change your account settings</h4>
                 <hr />
                 <dl class="dl-horizontal">
+                    <dt>User Name:</dt>
+                    <dd style="padding-bottom:5px"><asp:TextBox ID="UserName" runat="server" /></dd>
+
+                    <dt>Email:</dt>
+                    <dd style="padding-bottom:5px"><asp:TextBox ID="Email" runat="server"/></dd>
+
+                    <dt>Phone Number:</dt>
+                    <dd style="padding-bottom:5px"><asp:TextBox ID="PhoneNumber" runat="server"/></dd>
+                     
                     <dt>Password:</dt>
                     <dd>
-                        <asp:HyperLink NavigateUrl="/Account/ManagePassword" Text="[Change]" Visible="false" ID="ChangePassword" runat="server" />
-                        <asp:HyperLink NavigateUrl="/Account/ManagePassword" Text="[Create]" Visible="false" ID="CreatePassword" runat="server" />
+                        <asp:HyperLink NavigateUrl="/Account/ManagePassword" Text="[Change]" ID="ChangePassword" runat="server" />
                     </dd>
+                    <% if(User.IsInRole("Admin")) {%>
                     <dt>User Management:</dt>
                     <dd>
-                        <asp:HyperLink NavigateUrl="~/UserManagement.aspx" Text="[Manage]" runat="server" />
+                        <asp:HyperLink NavigateUrl="~/Account/UserManagement.aspx" Text="[Manage]" runat="server" />
 
                     </dd>
+                    <%} %>
                     <%--
                         Phone Numbers can used as a second factor of verification in a two-factor authentication system.
                         See <a href="http://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
@@ -48,7 +58,7 @@
                     </dd>
                     <% } %>
                     --%>
-
+                    <!--
                     <dt>Two-Factor Authentication:</dt>
                     <dd>
                         <p>
@@ -69,8 +79,10 @@
                         <asp:LinkButton Text="[Enable]" CommandArgument="true" OnClick="TwoFactorEnable_Click" runat="server" />
                         --%>
                         <% } %>
-                    </dd>
+                        
+                    </dd> -->
                 </dl>
+                <asp:Button ID="Save" runat="server" OnClick="SaveAccount" Text="Save" class="btn btn-success"/>
             </div>
         </div>
     </div>

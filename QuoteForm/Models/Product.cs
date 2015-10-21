@@ -41,7 +41,8 @@ namespace QuoteForm.Models
                 .Where(x => x.PartNumber == partno)
                 .FirstOrDefault();
 
-            return p.Cost;
+            if (p != null) return p.Cost;
+                else return 0;
         }
     }
 }

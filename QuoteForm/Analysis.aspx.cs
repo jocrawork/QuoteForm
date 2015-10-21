@@ -31,12 +31,6 @@ namespace QuoteForm
                     repHW.DataBind();
                 }
 
-                if (quote.linesAcc.Count > 0)
-                {
-                    repAcc.DataSource = quote.linesAcc;
-                    repAcc.DataBind();
-                }
-
                 if (quote.linesSW.Count > 0)
                 {
                     repSW.DataSource = quote.linesSW;

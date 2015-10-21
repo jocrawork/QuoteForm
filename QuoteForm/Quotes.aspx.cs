@@ -6,6 +6,9 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+
 
 namespace QuoteForm
 {
@@ -13,10 +16,11 @@ namespace QuoteForm
     {
         IDocumentSession session = QuoteForm.DataDocumentStore.Instance.OpenSession();
         List<Quote> quotes;
-
+        
         protected void Page_Load(object sender, EventArgs e)
         {
-            quotes = session.Query<Quote>().ToList();
+            quotes = session.Query<Quote>()
+                .ToList();
 
             if (!IsPostBack)
             {
@@ -42,6 +46,9 @@ namespace QuoteForm
             {
                 foreach(Quote q in quotes)
                 {
+                    if(q.Customer.Contact == "") //removes blank (new) quotes from DB when choosing another. should never be more than 1/user due to validation on Customer.Contact
+                        session.Delete(q);
+
                     q.IsActive = false;
                     if (q.Id == e.CommandArgument.ToString()) q.IsActive = true;
                 }
@@ -51,8 +58,21 @@ namespace QuoteForm
                 Response.Redirect("~/");
             }
 
+            if(e.CommandName == "Email")
+            {
+                var userManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                var user = userManager.FindByName(e.CommandArgument.ToString());
+
+                Response.Redirect( "mailto:" + user.Email );
+            }
+
             
 
+        }
+
+        public string QuoteClass(string user)
+        {
+            return (user == User.Identity.Name) ? "myquote" : "otherquote";
         }
 
         public string GetGrandTotalString(Quote q)

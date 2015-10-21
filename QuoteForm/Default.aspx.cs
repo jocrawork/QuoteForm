@@ -3,6 +3,8 @@ using QuoteForm.Models;
 using Raven.Client;
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Web;
@@ -57,9 +59,6 @@ namespace QuoteForm
                 repHW.DataSource = quote.linesHW;
                 repHW.DataBind();
 
-                repAcc.DataSource = quote.linesAcc;
-                repAcc.DataBind();
-
                 repSW.DataSource = quote.linesSW;
                 repSW.DataBind();
 
@@ -76,8 +75,13 @@ namespace QuoteForm
 
         protected void LoadQuote(string ID)
         {
-            Owner.Text       = quote.Owner;
-            Date.Text        = quote.Date;
+            var userManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            
+            Owner.Text = quote.Owner;
+            if (Owner.Text == "") Owner.Text = userManager.FindById(User.Identity.GetUserId()).UserName.ToString();
+            PhoneNumber.Text = quote.PhoneNumber;
+            if (PhoneNumber.Text == "") PhoneNumber.Text = userManager.FindById(User.Identity.GetUserId()).PhoneNumber.ToString();
+            Date.Text = quote.Date;
             if (Date.Text == "") Date.Text = DateTime.Today.ToShortDateString();
             if (quote.QuoteLength == 0) QuoteLength.Text = "";
             else QuoteLength.Text = quote.QuoteLength.ToString();
@@ -127,11 +131,10 @@ namespace QuoteForm
 
             //TOTALS SECTION
             HWtotalCell.Text    = quote.TotalLines("Hardware").ToString();
-            ACCtotalCell.Text   = quote.TotalLines("Accessories").ToString();
             SWtotalCell.Text    = quote.TotalLines("Software").ToString();
             CCtotalCell.Text    = quote.TotalLines("ContentCreation").ToString();
             INSTtotalCell.Text  = quote.TotalLines("Installation").ToString();
-            RECtotalCell.Text   = quote.TotalLines("Hardware").ToString();
+            RECtotalCell.Text   = quote.TotalLines("Recurring").ToString();
             TotalCell.Text      = quote.GetGrandTotal().ToString();
 
             if (quote.Freight == 0) Freight.Text = "";
@@ -145,69 +148,79 @@ namespace QuoteForm
         }
         protected void SaveQuote(Object source, EventArgs e)
         {
-            if (quote == null)
-            {
-                quote = new Quote();
-                session.Store(quote);
-            }
-            else
-            {
-                quote.Owner = Owner.Text;
-                quote.Date = Date.Text;
-                if(QuoteLength.Text != "") quote.QuoteLength = Convert.ToInt32(QuoteLength.Text);
-                quote.PaymentTerms = PaymentTermsDDL.SelectedValue;
-
-                quote.Customer = new Address();
-                quote.Customer.Contact = CustContact.Text;
-                quote.Customer.Company = CustCompany.Text;
-                quote.Customer.Address1 = CustAddress1.Text;
-                quote.Customer.Address2 = CustAddress2.Text;
-                quote.Customer.CityState = CustCityState.Text;
-                quote.Customer.Fax = CustFax.Text;
-                quote.Customer.Phone = CustPhone.Text;
-                quote.Customer.Email = CustEmail.Text;
-
-                quote.Billing = new Address();
-                quote.Billing.Contact = BillContact.Text;
-                quote.Billing.Company = BillCompany.Text;
-                quote.Billing.Address1 = BillAddress1.Text;
-                quote.Billing.Address2 = BillAddress2.Text;
-                quote.Billing.CityState = BillCityState.Text;
-                quote.Billing.Fax = BillFax.Text;
-                quote.Billing.Phone = BillPhone.Text;
-                quote.Billing.Email = BillEmail.Text;
-
-                quote.Shipping = new Address();
-                quote.Shipping.Contact = ShipContact.Text;
-                quote.Shipping.Company = ShipCompany.Text;
-                quote.Shipping.Address1 = ShipAddress1.Text;
-                quote.Shipping.Address2 = ShipAddress2.Text;
-                quote.Shipping.CityState = ShipCityState.Text;
-                quote.Shipping.Fax = ShipFax.Text;
-                quote.Shipping.Phone = ShipPhone.Text;
-                quote.Shipping.Email = ShipEmail.Text;
-
-                quote.Source = SourceDDL.SelectedValue;
-                quote.SpecificSource = SpecificSource.Text;
-                if (LocationCount.Text != "") quote.LocationCount = Convert.ToInt32(LocationCount.Text);
-                quote.POSProvidor = POSProvidor.Text;
-                quote.InstallDate = InstallDate.Text;
-                quote.BusinessUnit = BusinessUnitDDL.SelectedValue;
-
-                quote.NewLocation = NewLocation.Checked;
-                quote.Dealer = Dealer.Checked;
-
-                quote.TaxExempt = TaxStatusDDL.SelectedValue;
-
-                if (Freight.Text != "") quote.Freight = Convert.ToDouble(Freight.Text);
-                if (SalesTax.Text != "") quote.SalesTax = Convert.ToDouble(SalesTax.Text);
-
-                quote.InternalNotes = InternalNotes.InnerText;
-                quote.ExternalNotes = ExternalNotes.InnerText;
-            }
-
-            session.SaveChanges();
+            SaveQuote();
         }
+            protected void SaveQuote()
+            {
+                var userManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                
+                if (quote == null)
+                {
+                    quote = new Quote();
+                    session.Store(quote);
+                }
+                else
+                {
+                    quote.Owner = Owner.Text;
+                    quote.Date = Date.Text;
+                    quote.PhoneNumber = PhoneNumber.Text;
+                    quote.Email = userManager.FindById(User.Identity.GetUserId()).Email.ToString();
+                    if (QuoteLength.Text != "") quote.QuoteLength = Convert.ToInt32(QuoteLength.Text);
+                    quote.PaymentTerms = PaymentTermsDDL.SelectedValue;
+
+                    quote.Customer = new Address();
+                    quote.Customer.Contact = CustContact.Text;
+                    quote.Customer.Company = CustCompany.Text;
+                    quote.Customer.Address1 = CustAddress1.Text;
+                    quote.Customer.Address2 = CustAddress2.Text;
+                    quote.Customer.CityState = CustCityState.Text;
+                    quote.Customer.Fax = CustFax.Text;
+                    quote.Customer.Phone = CustPhone.Text;
+                    quote.Customer.Email = CustEmail.Text;
+
+                    quote.Billing = new Address();
+                    quote.Billing.Contact = BillContact.Text;
+                    quote.Billing.Company = BillCompany.Text;
+                    quote.Billing.Address1 = BillAddress1.Text;
+                    quote.Billing.Address2 = BillAddress2.Text;
+                    quote.Billing.CityState = BillCityState.Text;
+                    quote.Billing.Fax = BillFax.Text;
+                    quote.Billing.Phone = BillPhone.Text;
+                    quote.Billing.Email = BillEmail.Text;
+
+                    quote.Shipping = new Address();
+                    quote.Shipping.Contact = ShipContact.Text;
+                    quote.Shipping.Company = ShipCompany.Text;
+                    quote.Shipping.Address1 = ShipAddress1.Text;
+                    quote.Shipping.Address2 = ShipAddress2.Text;
+                    quote.Shipping.CityState = ShipCityState.Text;
+                    quote.Shipping.Fax = ShipFax.Text;
+                    quote.Shipping.Phone = ShipPhone.Text;
+                    quote.Shipping.Email = ShipEmail.Text;
+
+                    quote.Source = SourceDDL.SelectedValue;
+                    quote.SpecificSource = SpecificSource.Text;
+                    if (LocationCount.Text != "") quote.LocationCount = Convert.ToInt32(LocationCount.Text);
+                    quote.POSProvidor = POSProvidor.Text;
+                    quote.InstallDate = InstallDate.Text;
+                    quote.BusinessUnit = BusinessUnitDDL.SelectedValue;
+
+                    quote.NewLocation = NewLocation.Checked;
+                    quote.Dealer = Dealer.Checked;
+
+                    quote.TaxExempt = TaxStatusDDL.SelectedValue;
+
+                    if (Freight.Text != "") quote.Freight = Convert.ToDouble(Freight.Text);
+                        else quote.Freight = 0;
+                    if (SalesTax.Text != "") quote.SalesTax = Convert.ToDouble(SalesTax.Text);
+                    else quote.SalesTax = 0;
+
+                    quote.InternalNotes = InternalNotes.InnerText;
+                    quote.ExternalNotes = ExternalNotes.InnerText;
+                }
+
+                session.SaveChanges();
+            }
         protected void CopyQuote(Object source, EventArgs e)
         {
             Quote temp = new Quote(quote);
@@ -232,7 +245,11 @@ namespace QuoteForm
             Response.Redirect(Request.RawUrl);
         }
         protected void PDFQuote(Object source, EventArgs e)
-        {//demos: http://www.e-iceblue.com/Tutorials/Spire.PDF/Demos.html //had to add permissions to IIS Express Folder for Network Users
+        {//demos: http://www.e-iceblue.com/Tutorials/Spire.PDF/Demos.html //had to add permissions to IIS Express Folder for Network Users. Wont export more than 10 pages on free version.
+
+            SaveQuote();
+
+            var filename = PdfFileName.Value;
 
             PdfDocument pdf = new PdfDocument();
             PdfPageBase page = pdf.Pages.Add();
@@ -269,8 +286,12 @@ namespace QuoteForm
             page.Canvas.DrawString(contact, helv12, black, pageWidth / 2, y, centered);
                 size = helv12.MeasureString(contact);
                 y += size.Height + 1;
-            page.Canvas.DrawString("Prepared By: " + quote.Owner, helv12, black, 0, y);
-            page.Canvas.DrawString("Date: " + quote.Date, helv12, black, pageWidth, y, rightAlign);
+            page.Canvas.DrawString("By: " + quote.Owner, helv12, black, 0, y);
+            page.Canvas.DrawString(quote.Email, helv12, black, pageWidth, y, rightAlign);
+            size = helv12.MeasureString(contact);
+            y += size.Height + 1;
+            page.Canvas.DrawString("Date: " + quote.Date, helv12, black, 0, y);
+            page.Canvas.DrawString("PN: " + quote.PhoneNumber, helv12, black, pageWidth, y, rightAlign);
                 size = helv12.MeasureString(quote.Owner);
                 y += size.Height + 5;
             page.Canvas.DrawString(title, helv20, black, pageWidth / 2, y, centered);
@@ -361,14 +382,6 @@ namespace QuoteForm
                     y += size.Height + 2;
                 y += (buildPdfLines(page, quote.linesHW,"Hardware", y)).Bounds.Height + 2;
             }
-
-            if(quote.linesAcc.Count > 0)
-            {
-                page.Canvas.DrawString("Accessories", helv16, black, pageWidth / 2, y, centered);
-                    size = helv14.MeasureString("Hardware Accessories");
-                    y += size.Height + 2;
-                y += (buildPdfLines(page, quote.linesAcc,"Accessories", y)).Bounds.Height + 2;
-            }
             
             if(quote.linesSW.Count > 0)
             {
@@ -432,7 +445,9 @@ namespace QuoteForm
             y += 5;
             page.Canvas.DrawLine(new PdfPen(PdfBrushes.Black, .5f), new PointF(0, y), new PointF(pageWidth, y));
             y += 5;
-                
+             
+   
+            //TOTALS
             if(FreightExists || SalesTaxExists)
             {
                 page.Canvas.DrawString("Subtotal: $" + GrandTotal.ToString(), helv12, black, 0, y);
@@ -444,13 +459,12 @@ namespace QuoteForm
             }
             if (SalesTaxExists)
             {
-                page.Canvas.DrawString("SalesTax: $" + quote.SalesTax.ToString(), helv12, black, pageWidth / 2, y);
+                page.Canvas.DrawString("Sales Tax: $" + quote.SalesTax.ToString(), helv12, black, pageWidth / 2, y);
                 GrandTotal += quote.SalesTax;
             }
 
-            page.Canvas.DrawString("$" + GrandTotal.ToString(), helv12Bold, black, pageWidth, y, rightAlign);
+            page.Canvas.DrawString("Total: $" + GrandTotal.ToString(), helv12Bold, black, pageWidth, y, rightAlign);
                 size = helv12Bold.MeasureString("999999");
-                page.Canvas.DrawString("Total: ", helv12Bold, black, pageWidth - size.Width, y, rightAlign);
 
             y += size.Height + 5;
             page.Canvas.DrawLine(new PdfPen(PdfBrushes.Black, .5f), new PointF(0, y), new PointF(pageWidth, y));
@@ -487,9 +501,10 @@ namespace QuoteForm
                 y += size.Height + 1;
 
             
-            pdf.SaveToFile("HelloWorld.pdf");
+            //pdf.SaveToFile(filename);
+            pdf.SaveToHttpResponse(filename, Response, HttpReadType.Save);
             pdf.Close();
-            System.Diagnostics.Process.Start("Helloworld.pdf");
+            System.Diagnostics.Process.Start(filename);
 
 
         }
@@ -593,22 +608,6 @@ namespace QuoteForm
                 args.CellStyle.BackgroundBrush = PdfBrushes.White;
             }
         }
-
-        public void BillingAutoFill(Object source, EventArgs e)
-        {
-            quote.Billing = quote.Customer;
-            session.SaveChanges();
-
-            Response.Redirect(Request.RawUrl);
-        }
-
-        public void ShippingAutoFill(Object source, EventArgs e)
-        {
-            quote.Shipping = quote.Customer;
-            session.SaveChanges();
-
-            Response.Redirect(Request.RawUrl);
-        }
         
         protected void ProductSelected(Object source, EventArgs e)
         {
@@ -625,10 +624,12 @@ namespace QuoteForm
                 var repParent = temp.NamingContainer;
 
                 TextBox partNum     = (TextBox)repParent.FindControl("AddPartNumber");
+                TextBox partCost    = (TextBox)repParent.FindControl("AddPartCost");
                 TextBox unitPrice   = (TextBox)repParent.FindControl("AddUnitPrice");
                 TextBox quantity    = (TextBox)repParent.FindControl("AddQuantity");
 
                 partNum.Text        = p.PartNumber.ToString();
+                partCost.Text       = p.Cost.ToString();
                 unitPrice.Text      = p.Price.ToString();
                 quantity.Text       = p.DefaultQuantity.ToString();
 
@@ -669,6 +670,7 @@ namespace QuoteForm
                 line.Product.Category   = ((HiddenField)e.Item.FindControl("AddCategory")).Value.ToString();
                 line.Product.Name       = ((ComboBox)e.Item.FindControl("AddProduct")).SelectedValue.ToString();
                 line.Product.PartNumber = Convert.ToInt32(((TextBox)e.Item.FindControl("AddPartNumber")).Text);
+                line.Product.Cost       = Convert.ToDouble(((TextBox)e.Item.FindControl("AddUnitPrice")).Text);
                 line.Product.Price      = Convert.ToDouble(((TextBox)e.Item.FindControl("AddUnitPrice")).Text);
                 line.Quantity           = Convert.ToInt32(((TextBox)e.Item.FindControl("AddQuantity")).Text);
                 line.Total              = line.Product.Price * line.Quantity;
@@ -688,19 +690,6 @@ namespace QuoteForm
             ComboBox temp = (ComboBox)source;
 
             foreach(Product p in prods)
-            {
-                temp.Items.Add(p.Name);
-            }
-        }
-        protected void LoadAccessoriesProducts(Object source, EventArgs e)
-        {
-            List<Product> prods = session.Query<Product>()
-                .Where(x => x.Category == "Accessories")
-                .ToList();
-
-            ComboBox temp = (ComboBox)source;
-
-            foreach (Product p in prods)
             {
                 temp.Items.Add(p.Name);
             }

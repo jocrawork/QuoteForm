@@ -64,7 +64,7 @@
                         </AnonymousTemplate>
                         <LoggedInTemplate>
                             <ul class="nav navbar-nav navbar-right">
-                                <li><a runat="server" class="username" href="~/Account/Manage" title="Manage your account">Hello, <asp:LoginName runat="server" CssClass="username" /></a></li>
+                                <li><a runat="server" class="username" href="~/Account/Manage" title="Manage your account">Account</a></li>
                                 <li>
                                     <asp:LoginStatus runat="server" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" OnLoggingOut="Unnamed_LoggingOut" />
                                 </li>
@@ -79,7 +79,7 @@
             </asp:ContentPlaceHolder>
             <hr />
             <footer>
-                &copy; <%: DateTime.Now.Year %> - Jordan Crabb, TDS/NCR. <a href="mailto:jordan.crabb@ncr.com">Email Me</a> for any help/suggestions.
+                &copy; <%: DateTime.Now.Year %> - Jordan Crabb, NCR/TDS. <a href="mailto:jordan.crabb@ncr.com">Email Me</a> for any help/suggestions.
             </footer>
         </div>
     </form>

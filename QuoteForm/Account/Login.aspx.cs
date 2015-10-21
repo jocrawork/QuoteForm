@@ -39,7 +39,26 @@ namespace QuoteForm.Account
 
                 // This doen't count login failures towards account lockout
                 // To enable password failures to trigger lockout, change to shouldLockout: true
-                var result = signinManager.PasswordSignIn(Email.Text, Password.Text, RememberMe.Checked, shouldLockout: false);
+                var user = manager.FindByEmail(Email.Text);
+                var result = new SignInStatus();
+                
+                if(user.EmailConfirmed)
+                    result = signinManager.PasswordSignIn(user.UserName, Password.Text, RememberMe.Checked, shouldLockout: false);
+                else if(!user.EmailConfirmed)
+                {
+                    result = SignInStatus.Failure;
+
+                    string code = manager.GenerateEmailConfirmationToken(user.Id);
+                    string callbackUrl = IdentityHelper.GetUserConfirmationRedirectUrl(code, user.Id, Request);
+                    IdentityMessage msg = new IdentityMessage()
+                    {
+                        Destination = user.Email,
+                        Subject = "QuoteForm Email Confirmation",
+                        Body = "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>."
+                    };
+
+                    manager.EmailService.SendAsync(msg);
+                }
 
                 switch (result)
                 {
@@ -57,7 +76,7 @@ namespace QuoteForm.Account
                         break;
                     case SignInStatus.Failure:
                     default:
-                        FailureText.Text = "Invalid login attempt";
+                        FailureText.Text = "Invalid login attempt. Check for email confirmation if new account";
                         ErrorMessage.Visible = true;
                         break;
                 }

@@ -37,8 +37,6 @@ namespace QuoteForm
         
         Hardware,
 
-        Accessories,
-
         Software,
 
         ContentCreation,
