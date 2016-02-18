@@ -12,6 +12,13 @@ namespace QuoteForm
         // For more information on Bundling, visit http://go.microsoft.com/fwlink/?LinkID=303951
         public static void RegisterBundles(BundleCollection bundles)
         {
+
+            bundles.Add(new ScriptBundle("~/bundles/jQuery").Include(
+                "~/Scripts/jquery-1.10.2.js"
+                ,"~/Scripts/jquery-1.10.2.intellistense.js"
+                ,"~/Scripts/bootstrap.js"
+                ));
+
             bundles.Add(new ScriptBundle("~/bundles/WebFormsJs").Include(
                             "~/Scripts/WebForms/WebForms.js",
                             "~/Scripts/WebForms/WebUIValidation.js",
@@ -33,6 +40,11 @@ namespace QuoteForm
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                             "~/Scripts/modernizr-*"));
+
+            bundles.Add(new StyleBundle("~/bundles/BootstrapCss").Include(
+                "~/Content/bootstrap.css"
+                , "~/Content/bootstrap-theme.css"
+                ));
 
             ScriptManager.ScriptResourceMapping.AddDefinition(
                 "respond",

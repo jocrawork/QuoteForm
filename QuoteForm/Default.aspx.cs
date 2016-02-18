@@ -250,6 +250,7 @@ namespace QuoteForm
             SaveQuote();
 
             var filename = PdfFileName.Value;
+            if (filename == "CANCELDONOTMAKE") return;
 
             PdfDocument pdf = new PdfDocument();
             PdfPageBase page = pdf.Pages.Add();
@@ -665,21 +666,66 @@ namespace QuoteForm
             }
             if(e.CommandName == "Add")
             {
-                LineItem line = new LineItem();
 
-                line.Product.Category   = ((HiddenField)e.Item.FindControl("AddCategory")).Value.ToString();
-                line.Product.Name       = ((ComboBox)e.Item.FindControl("AddProduct")).SelectedValue.ToString();
-                line.Product.PartNumber = Convert.ToInt32(((TextBox)e.Item.FindControl("AddPartNumber")).Text);
-                line.Product.Cost       = Convert.ToDouble(((TextBox)e.Item.FindControl("AddUnitPrice")).Text);
-                line.Product.Price      = Convert.ToDouble(((TextBox)e.Item.FindControl("AddUnitPrice")).Text);
-                line.Quantity           = Convert.ToInt32(((TextBox)e.Item.FindControl("AddQuantity")).Text);
-                line.Total              = line.Product.Price * line.Quantity;
+                if (true) //(EmptyFieldCheck(e))
+                {
+                    LineItem line = new LineItem();
 
-                quote.AddLineItem(line);
-                session.SaveChanges();
-                Response.Redirect(Request.RawUrl);
+                    line.Product.Category = ((HiddenField)e.Item.FindControl("AddCategory")).Value.ToString();
+                    line.Product.Name = ((ComboBox)e.Item.FindControl("AddProduct")).SelectedValue.ToString();
+                    line.Product.PartNumber = Convert.ToInt32(((TextBox)e.Item.FindControl("AddPartNumber")).Text);
+                    line.Product.Cost = Convert.ToDouble(((TextBox)e.Item.FindControl("AddPartCost")).Text);
+                    line.Product.Price = Convert.ToDouble(((TextBox)e.Item.FindControl("AddUnitPrice")).Text);
+                    line.Quantity = Convert.ToInt32(((TextBox)e.Item.FindControl("AddQuantity")).Text);
+                    line.Total = line.Product.Price * line.Quantity;
+
+                    quote.AddLineItem(line);
+                    session.SaveChanges();
+                    Response.Redirect(Request.RawUrl);
+                }
+                
+                //Server side attempt at empty field add line validation
+                    /*
+                else
+                {
+                    var cat = ((HiddenField)e.Item.FindControl("AddCategory")).Value.ToString();
+
+                    switch(cat)
+                    {
+                        case "Hardware":
+                            HWEmptyFieldAlert.Visible = true;
+                            break;
+                        case "Software":
+                            SWEmptyFieldAlert.Visible = true;
+                            break;
+                        case "ContentCreation":
+                            CCEmptyFieldAlert.Visible = true;
+                            break;
+                        case "Installation":
+                            InstEmptyFieldAlert.Visible = true;
+                            break;
+                        case "Recurring":
+                            RecEmptyFieldAlert.Visible = true;
+                            break;
+                    }
+                }
+                     */ 
             }
         }
+
+        //DOESN'T WORK
+        /*
+        protected bool EmptyFieldCheck(RepeaterCommandEventArgs e)
+        {
+            if (((ComboBox)e.Item.FindControl("AddProduct")).SelectedValue == null) return false;
+            else if ((((TextBox)e.Item.FindControl("AddPartNumber")).Text) == null) return false;
+            else if ((((TextBox)e.Item.FindControl("AddPartCost")).Text) == null) return false;
+            else if ((((TextBox)e.Item.FindControl("AddUnitPrice")).Text) == null) return false;
+            else if ((((TextBox)e.Item.FindControl("AddQuantity")).Text) == null) return false;
+
+            else return true;
+        }
+        */
 
         protected void LoadHardwareProducts(Object source, EventArgs e)
         {

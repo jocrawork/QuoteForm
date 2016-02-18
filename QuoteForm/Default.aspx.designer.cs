@@ -481,6 +481,15 @@ namespace QuoteForm {
         protected global::System.Web.UI.WebControls.Repeater repHW;
         
         /// <summary>
+        /// HWEmptyFieldAlert control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl HWEmptyFieldAlert;
+        
+        /// <summary>
         /// repSW control.
         /// </summary>
         /// <remarks>
@@ -488,6 +497,15 @@ namespace QuoteForm {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater repSW;
+        
+        /// <summary>
+        /// SWEmptyFieldAlert control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl SWEmptyFieldAlert;
         
         /// <summary>
         /// repCC control.
@@ -499,6 +517,15 @@ namespace QuoteForm {
         protected global::System.Web.UI.WebControls.Repeater repCC;
         
         /// <summary>
+        /// CCEmptyFieldAlert control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl CCEmptyFieldAlert;
+        
+        /// <summary>
         /// repInst control.
         /// </summary>
         /// <remarks>
@@ -508,6 +535,15 @@ namespace QuoteForm {
         protected global::System.Web.UI.WebControls.Repeater repInst;
         
         /// <summary>
+        /// InstEmptyFieldAlert control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl InstEmptyFieldAlert;
+        
+        /// <summary>
         /// repRec control.
         /// </summary>
         /// <remarks>
@@ -515,6 +551,15 @@ namespace QuoteForm {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater repRec;
+        
+        /// <summary>
+        /// RecEmptyFieldAlert control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl RecEmptyFieldAlert;
         
         /// <summary>
         /// TotalsTable control.

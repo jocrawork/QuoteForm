@@ -127,9 +127,7 @@ namespace QuoteForm.Models
         }
         
         public void AddLineItem(LineItem line)
-        {
-            line.Product.Cost = line.Product.GetCost(line.Product.PartNumber);
-            
+        {   
             switch (line.Product.Category)
                 {
                     case "Hardware":

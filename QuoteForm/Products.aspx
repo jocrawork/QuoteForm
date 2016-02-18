@@ -10,18 +10,39 @@
         $(document).ready(function () {
             $('input#Filter').quicksearch('#products tbody tr');
         });
+
+        function EmptyFieldCheck()
+        {
+            var emptyFlag = true;
+
+            if ($("#AddProduct").find("#CategoryDDL").val() == "Default" ||
+                        $("#AddProduct").find("#Name").val() == "" ||
+                        $("#AddProduct").find("#PartNumber").val() == "" ||
+                        $("#AddProduct").find("#Price").val() == "" ||
+                        $("#AddProduct").find("#Cost").val() == "" ||
+                        $("#AddProduct").find("#DefaultQuantity").val() == "") {
+                $('#EmptyFieldAlert').show();
+                emptyFlag = false;
+            }
+
+            return emptyFlag;
+        }
     </script>
 
     <%if(User.IsInRole("Admin")||User.IsInRole("Products")){ %>
-    <div class="well" style="text-align:center">    
-        <asp:DropDownList ID="CategoryDDL" runat="server" />
-        <asp:TextBox ID="Name" runat="server" placeholder="Name"/>
-        <asp:TextBox ID="PartNumber" runat="server" placeholder="Part Number"/>
-        <asp:TextBox ID="Price" runat="server" placeholder="Price"/>
-        <asp:TextBox ID="Cost" runat="server" placeholder="Cost"/>
-        <asp:TextBox ID="DefaultQuantity" runat="server" placeholder="Quantity" />
+    <div ID="AddProduct" class="well" style="text-align:center">    
+        <asp:DropDownList ID="CategoryDDL" runat="server" ClientIdMode="Static"/>
+        <asp:TextBox ID="Name" runat="server" placeholder="Name" ClientIdMode="Static"/>
+        <asp:TextBox ID="PartNumber" runat="server" placeholder="Part Number" ClientIdMode="Static"/>
+        <asp:TextBox ID="Price" runat="server" placeholder="Price" ClientIdMode="Static"/>
+        <asp:TextBox ID="Cost" runat="server" placeholder="Cost" ClientIdMode="Static"/>
+        <asp:TextBox ID="DefaultQuantity" runat="server" placeholder="Quantity" ClientIdMode="Static"/>
 
-        <asp:Button class="btn btn-success" ID="Add" runat="server" Text="Add" OnClick="Add_Click" />
+        <asp:Button class="btn btn-success" ID="Add" runat="server" Text="Add" OnClick="Add_Click" onClientClick="return EmptyFieldCheck();"/>
+
+        <div id="EmptyFieldAlert" class="alert alert-danger" style="display:none" runat="server" ClientIDMode="Static">
+            <p>Please fill in all fields before trying to add a new Product!</p>
+        </div>
     </div>
     <%} %>
     <div>

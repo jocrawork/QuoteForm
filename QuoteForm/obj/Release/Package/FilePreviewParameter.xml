@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="Default Web Site/QuoteForm" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\JC185344\\Documents\\VisualStudio2013\\Projects\\QuoteForm\\QuoteForm\\obj\\Release\\Package\\PackageTmp$" />
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^C:\\Users\\JC185344\\Documents\\VisualStudio2013\\Projects\\QuoteForm\\QuoteForm\\obj\\Release\\Package\\PackageTmp$" />
+  </parameter>
+  <parameter name="Add write permission to App_Data Folder" description="Add write permission to App_Data folder" value="Default Web Site/QuoteForm/App_Data" tags="Hidden">
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^C:\\Users\\JC185344\\Documents\\VisualStudio2013\\Projects\\QuoteForm\\QuoteForm\\obj\\Release\\Package\\PackageTmp\\App_Data$" />
+  </parameter>
+  <parameter name="DefaultConnection-Web.config Connection String" description="" value="Data Source=.\SQLEXPRESS;AttachDbFilename=|DataDirectory|\aspnet-QuoteForm-20150603093059.mdf;Initial Catalog=aspnet-QuoteForm-20150603093059;Integrated Security=True;User Instance=True" tags="">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\JC185344\\Documents\\VisualStudio2013\\Projects\\QuoteForm\\QuoteForm\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='DefaultConnection']/@connectionString" />
+  </parameter>
+  <parameter name="RavenDB-Web.config Connection String" description="" value="DataDir = ~\App_data\Database" tags="">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\JC185344\\Documents\\VisualStudio2013\\Projects\\QuoteForm\\QuoteForm\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='RavenDB']/@connectionString" />
+  </parameter>
+</parameters>

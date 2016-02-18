@@ -1,4 +1,5 @@
 ﻿using Raven.Client;
+using Raven.Client.Document;
 using Raven.Client.Embedded;
 using Raven.Database.Server;
 using System;
@@ -30,9 +31,8 @@ namespace QuoteForm
 
         public static IDocumentStore Initialize()
         {
-            instance = new EmbeddableDocumentStore 
+            instance = new DocumentStore 
             {ConnectionStringName = "RavenDB",
-                UseEmbeddedHttpServer = true
             };
 
             NonAdminHttp.EnsureCanListenToWhenInNonAdminContext(8080);
