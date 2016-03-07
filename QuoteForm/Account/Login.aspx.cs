@@ -8,6 +8,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Owin;
 using QuoteForm.Models;
 using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace QuoteForm.Account
 {
@@ -31,6 +32,8 @@ namespace QuoteForm.Account
         [AllowAnonymous]
         protected void LogIn(object sender, EventArgs e)
         {
+            var FailureMessage = "";
+
             if (IsValid)
             {
                 // Validate the user password
@@ -39,13 +42,17 @@ namespace QuoteForm.Account
 
                 // This doen't count login failures towards account lockout
                 // To enable password failures to trigger lockout, change to shouldLockout: true
+   
                 var user = manager.FindByEmail(Email.Text);
+
                 var result = new SignInStatus();
                 
-                if(user.EmailConfirmed)
+                
+                if(user.IsEmailConfirmed)
                     result = signinManager.PasswordSignIn(user.UserName, Password.Text, RememberMe.Checked, shouldLockout: false);
-                else if(!user.EmailConfirmed)
+                else if(!user.IsEmailConfirmed)
                 {
+                    FailureMessage = "Check your email now for new account activation!";
                     result = SignInStatus.Failure;
 
                     string code = manager.GenerateEmailConfirmationToken(user.Id);
@@ -59,6 +66,7 @@ namespace QuoteForm.Account
 
                     manager.EmailService.SendAsync(msg);
                 }
+                
 
                 switch (result)
                 {
@@ -76,7 +84,7 @@ namespace QuoteForm.Account
                         break;
                     case SignInStatus.Failure:
                     default:
-                        FailureText.Text = "Invalid login attempt. Check for email confirmation if new account";
+                        FailureText.Text = "Invalid login attempt. " + FailureMessage;
                         ErrorMessage.Visible = true;
                         break;
                 }

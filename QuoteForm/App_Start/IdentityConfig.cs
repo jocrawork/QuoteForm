@@ -2,13 +2,19 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+using RavenDB.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
+using Owin;
 using Microsoft.Owin.Security;
 using QuoteForm.Models;
 using System.Net.Mail;
 using System.Windows.Forms;
+using Raven.Client;
+
+using System.Linq;
+using Raven.Client.Linq;
+using System.Collections.Generic;
 
 namespace QuoteForm
 {
@@ -43,14 +49,20 @@ namespace QuoteForm
     // Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
     public class ApplicationUserManager : UserManager<ApplicationUser>
     {
+       
         public ApplicationUserManager(IUserStore<ApplicationUser> store)
             : base(store)
         {
         }
 
+        public List<ApplicationUser> GetAllUsers()
+        {
+            return this.Users.ToList();
+        }
+
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
-            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
+            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(() => context.Get<IDocumentSession>()));
             // Configure validation logic for usernames
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
             {
@@ -112,9 +124,10 @@ namespace QuoteForm
         }
     }
 
-    public class ApplicationRoleManager : RoleManager<IdentityRole>
+    /*
+    public class ApplicationRoleManager : RoleManager<RavenRole>
     {
-        public ApplicationRoleManager(IRoleStore<IdentityRole, string> roleStore)
+        public ApplicationRoleManager(IRoleStore<RavenRole, string> roleStore)
             : base(roleStore) { }
 
         public static ApplicationRoleManager Create(
@@ -122,8 +135,9 @@ namespace QuoteForm
             IOwinContext context)
         {
             var manager = new ApplicationRoleManager(
-                new RoleStore<IdentityRole>(context.Get<ApplicationDbContext>()));
+                new RavenRoleStore());
             return manager;
         }
     }
+     */
 }

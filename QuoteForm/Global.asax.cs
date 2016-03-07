@@ -29,7 +29,7 @@ namespace QuoteForm
             }
         }
 
-        public static IDocumentStore Initialize()
+        public static IDocumentSession Initialize()
         {
             instance = new DocumentStore 
             {ConnectionStringName = "RavenDB",
@@ -39,7 +39,7 @@ namespace QuoteForm
 
             instance.Conventions.IdentityPartsSeparator = "-";
             instance.Initialize();
-            return instance;
+            return instance.OpenSession();
         }
     }
 

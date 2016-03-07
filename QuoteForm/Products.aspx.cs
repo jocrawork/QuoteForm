@@ -7,12 +7,13 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Raven.Client;
 using Humanizer;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace QuoteForm
 {
     public partial class Products : Page
     {
-        IDocumentSession session = QuoteForm.DataDocumentStore.Instance.OpenSession();
+        IDocumentSession session = HttpContext.Current.GetOwinContext().Get<IDocumentSession>();
         Quote quote = new Quote();
 
         protected void Page_Load(object sender, EventArgs e)
@@ -39,14 +40,23 @@ namespace QuoteForm
 
         protected void Add_Click(object sender, EventArgs e)
         {
+            var ID = HiddenFieldAdd.Value;
             Product p = new Product();
+
+            //CHECKS DB for existing product to update
+            if(ID != "") p = session.Load<Product>(ID);
+            
+            //prevents accidental override
+            if(p.PartNumber != PartNumber.Text)
+                p = new Product();
+
             p.Category = CategoryDDL.SelectedValue;
             p.Name = Name.Text;
-            p.PartNumber = Convert.ToInt32(PartNumber.Text);
+            p.PartNumber = PartNumber.Text;
             if (Price.Text != "") p.Price = Convert.ToDouble(Price.Text);
             p.Cost = Convert.ToDouble(Cost.Text);
             p.DefaultQuantity = Convert.ToInt32(DefaultQuantity.Text);
-
+            
             session.Store(p);
             session.SaveChanges();
 
@@ -55,6 +65,21 @@ namespace QuoteForm
 
         protected void repProducts_ItemCommand(object source, CommandEventArgs e)
         {
+            if(e.CommandName == "Edit")
+            {
+                string ID = e.CommandArgument.ToString();
+                HiddenFieldAdd.Value = ID;
+
+                var prod = session.Load<Product>(ID);
+                CategoryDDL.SelectedValue = prod.Category;
+                Name.Text = prod.Name;
+                PartNumber.Text = prod.PartNumber;
+                Price.Text = prod.Price.ToString();
+                Cost.Text = prod.Cost.ToString();
+                DefaultQuantity.Text = prod.DefaultQuantity.ToString();
+
+
+            }
             if (e.CommandName == "Delete")
             {
                 string ID = e.CommandArgument.ToString();

@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<parameters>
-  <parameter name="DefaultConnection-Web.config Connection String" description="DefaultConnection Connection String used in web.config by the application to access the database." defaultValue="Data Source=.\SQLEXPRESS;AttachDbFilename=|DataDirectory|\aspnet-QuoteForm-20150603093059.mdf;Initial Catalog=aspnet-QuoteForm-20150603093059;Integrated Security=True;User Instance=True" tags="SqlConnectionString">
-    <parameterEntry kind="XmlFile" scope="C:\\Users\\JC185344\\Documents\\VisualStudio2013\\Projects\\QuoteForm\\QuoteForm\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='DefaultConnection']/@connectionString" />
-  </parameter>
-  <parameter name="RavenDB-Web.config Connection String" description="RavenDB Connection String used in web.config by the application to access the database." defaultValue="URL = http://10.0.0.56:8080;user=administrator;password=4aqutA2a" tags="SqlConnectionString">
-    <parameterEntry kind="XmlFile" scope="C:\\Users\\JC185344\\Documents\\VisualStudio2013\\Projects\\QuoteForm\\QuoteForm\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='RavenDB']/@connectionString" />
-  </parameter>
-</parameters>

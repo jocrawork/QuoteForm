@@ -8,6 +8,7 @@ using Owin;
 using QuoteForm.Models;
 using System.Web.Http;
 using System.Web.UI.WebControls;
+using Raven.Client;
 
 namespace QuoteForm.Account
 {
@@ -18,16 +19,23 @@ namespace QuoteForm.Account
         {
             var manager = Context.GetOwinContext().GetUserManager<ApplicationUserManager>();
             var signInManager = Context.GetOwinContext().Get<ApplicationSignInManager>();
+            var session = Context.GetOwinContext().Get<IDocumentSession>();
 
-                var user = new ApplicationUser() { UserName = UserName.Text, Email = Email.Text, PhoneNumber = PhoneNumber.Text };
-                IdentityResult result = manager.Create(user, Password.Text);
+            //EMAIL CONFIRMATION TURNED OFF UNTIL SERVER ACCESS FIXED
+            //var user = new ApplicationUser() { UserName = UserName.Text, Email = Email.Text, PhoneNumber = PhoneNumber.Text };
+            
+            var user = new ApplicationUser() { UserName = UserName.Text, Email = Email.Text, IsEmailConfirmed = true, PhoneNumber = PhoneNumber.Text };
+            session.Store(user);
+            IdentityResult result = manager.Create(user, Password.Text);
 
             if (result.Succeeded)
             {
+                session.SaveChanges();
+                
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                 string code = manager.GenerateEmailConfirmationToken(user.Id);
                 string callbackUrl = IdentityHelper.GetUserConfirmationRedirectUrl(code, user.Id, Request);
-                //manager.SendEmail(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>.");
+                
 
                 IdentityMessage msg = new IdentityMessage()
                     {
@@ -36,10 +44,10 @@ namespace QuoteForm.Account
                         Body = "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>."
                     };
 
-                manager.EmailService.SendAsync(msg);
-
-                signInManager.SignIn( user, isPersistent: false, rememberBrowser: false);
-                IdentityHelper.RedirectToReturnUrl(Request.QueryString["ReturnUrl"], Response);
+                //EMAIL CONFIRMATION TURNED OFF UNTIL SERVER ACCESS FIXED
+                //manager.EmailService.SendAsync(msg);
+                
+                Response.Redirect("~/");
             }
             else 
             {

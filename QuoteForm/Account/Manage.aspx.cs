@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Owin;
@@ -78,7 +77,6 @@ namespace QuoteForm.Account
             user.PhoneNumber = PhoneNumber.Text;
 
             manager.Update(user);
-            Context.GetOwinContext().Get<ApplicationDbContext>().SaveChanges();
 
             Response.Redirect(Request.RawUrl);
         }

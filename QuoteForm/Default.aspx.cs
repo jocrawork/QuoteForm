@@ -24,7 +24,7 @@ namespace QuoteForm
 {   
     public partial class _Default : Page
     {
-        IDocumentSession session = QuoteForm.DataDocumentStore.Instance.OpenSession();        
+        IDocumentSession session = HttpContext.Current.GetOwinContext().Get<IDocumentSession>();        
         Quote quote;
         string QuoteID;
 
@@ -629,7 +629,7 @@ namespace QuoteForm
                 TextBox unitPrice   = (TextBox)repParent.FindControl("AddUnitPrice");
                 TextBox quantity    = (TextBox)repParent.FindControl("AddQuantity");
 
-                partNum.Text        = p.PartNumber.ToString();
+                partNum.Text        = p.PartNumber;
                 partCost.Text       = p.Cost.ToString();
                 unitPrice.Text      = p.Price.ToString();
                 quantity.Text       = p.DefaultQuantity.ToString();
@@ -673,7 +673,7 @@ namespace QuoteForm
 
                     line.Product.Category = ((HiddenField)e.Item.FindControl("AddCategory")).Value.ToString();
                     line.Product.Name = ((ComboBox)e.Item.FindControl("AddProduct")).SelectedValue.ToString();
-                    line.Product.PartNumber = Convert.ToInt32(((TextBox)e.Item.FindControl("AddPartNumber")).Text);
+                    line.Product.PartNumber = ((TextBox)e.Item.FindControl("AddPartNumber")).Text;
                     line.Product.Cost = Convert.ToDouble(((TextBox)e.Item.FindControl("AddPartCost")).Text);
                     line.Product.Price = Convert.ToDouble(((TextBox)e.Item.FindControl("AddUnitPrice")).Text);
                     line.Quantity = Convert.ToInt32(((TextBox)e.Item.FindControl("AddQuantity")).Text);

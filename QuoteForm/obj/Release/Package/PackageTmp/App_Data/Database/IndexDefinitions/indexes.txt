@@ -1,2 +1,0 @@
-71 - Auto/Products/ByCategoryAndNameAndPartNumber
-72 - Auto/Quotes/ByCustomer_ContactAndIsActive

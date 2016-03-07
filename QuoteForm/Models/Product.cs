@@ -3,17 +3,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace QuoteForm.Models
 {
     public class Product
     {
-        IDocumentSession session = QuoteForm.DataDocumentStore.Instance.OpenSession();
+        IDocumentSession session = HttpContext.Current.GetOwinContext().Get<IDocumentSession>();
 
         public string Id { get; set; }
         public string Category { get; set; }
         public string Name { get; set; }
-        public int    PartNumber { get; set; }
+        public string PartNumber { get; set; }
         public double Price { get; set; }
         public double Cost { get; set; }
         public int    DefaultQuantity { get; set; }
@@ -34,7 +35,7 @@ namespace QuoteForm.Models
             this.DefaultQuantity = p.DefaultQuantity;
         }
 
-        public double GetCost(int partno)
+        public double GetCost(string partno)
         {
             Product p = session.Query<Product>()
                 .Customize(x => x.WaitForNonStaleResultsAsOfLastWrite())
@@ -44,5 +45,6 @@ namespace QuoteForm.Models
             if (p != null) return p.Cost;
                 else return 0;
         }
+               
     }
 }

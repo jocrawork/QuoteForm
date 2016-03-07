@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using QuoteForm.Models;
+using Raven.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +13,10 @@ namespace QuoteForm
 {
     public partial class UserManagement : Page
     {
-        ApplicationDbContext context = new ApplicationDbContext();
+        IDocumentSession session = HttpContext.Current.GetOwinContext().Get<IDocumentSession>();
+        
         List<ApplicationUser> users = new List<ApplicationUser>();
+        RavenRoleStore roleStore = new RavenRoleStore();
         
         protected void Page_Load(object sender, EventArgs e)
         {//this is not pretty. sorry
@@ -44,7 +46,7 @@ namespace QuoteForm
 
         protected void LoadRoles()
         {
-            var roles = context.Roles.ToList();
+            var roles = roleStore.GetAllRoles();
 
             ListItem def = new ListItem("Select a Role", null);
             rolesDDL.Items.Add(def);
@@ -57,7 +59,8 @@ namespace QuoteForm
         protected void LoadUsers()
         {
             var userManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            var users = userManager.Users;
+            var users = userManager.GetAllUsers();
+                
 
             ListItem def = new ListItem("Select a User", null);
             usersDDL.Items.Add(def);
@@ -71,8 +74,8 @@ namespace QuoteForm
 
         protected void AddRole(Object source, EventArgs e)
         {
-            context.Roles.Add(new IdentityRole(NewRoleName.Text));
-            context.SaveChanges();
+
+            roleStore.CreateRole(NewRoleName.Text);
 
             Response.Redirect(Request.RawUrl);
         }
@@ -81,15 +84,8 @@ namespace QuoteForm
         protected void LoadUsersInRole()
         {
             var userManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            var roleManager = Request.GetOwinContext().Get<ApplicationRoleManager>();
 
-            var pairs = roleManager.FindByName(rolesDDL.SelectedItem.Text).Users;
-
-
-            foreach (var user in pairs)
-            {
-                users.Add((userManager.FindById(user.UserId)));
-            }
+            users = roleStore.GetUsersInRole(rolesDDL.SelectedItem.Text);
 
             repUsers.DataSource = users;
             repUsers.DataBind();
@@ -107,7 +103,7 @@ namespace QuoteForm
         protected void repUsers_ItemCommand(Object source, CommandEventArgs e)
         {
             var userManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            var roleManager = Request.GetOwinContext().Get<ApplicationRoleManager>();
+            //var roleManager = Request.GetOwinContext().Get<ApplicationRoleManager>();
             var user = userManager.FindByEmail(e.CommandArgument.ToString());
 
             if(e.CommandName == "Remove")
@@ -116,7 +112,6 @@ namespace QuoteForm
                 userManager.RemoveFromRole(user.Id, rolesDDL.SelectedItem.Text);
 
                 userManager.Update(user);
-                Context.GetOwinContext().Get<ApplicationDbContext>().SaveChanges();
 
                 Response.Redirect(Request.RawUrl);
             }

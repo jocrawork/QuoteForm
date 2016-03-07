@@ -5,6 +5,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Owin;
 using QuoteForm.Models;
+using Raven.Client;
 
 namespace QuoteForm.Account
 {
@@ -23,9 +24,15 @@ namespace QuoteForm.Account
             if (code != null && userId != null)
             {
                 var manager = Context.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                var session = Context.GetOwinContext().Get<IDocumentSession>();
+
                 var result = manager.ConfirmEmail(userId, code);
                 if (result.Succeeded)
                 {
+                    //var user = manager.FindById(userId);
+                    //user.IsEmailConfirmed = true; //ConfirmEmail function above not working with RavenDB implementation
+                    session.SaveChanges();
+
                     successPanel.Visible = true;
                     return;
                 }

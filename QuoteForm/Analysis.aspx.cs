@@ -6,12 +6,13 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace QuoteForm
 {
     public partial class Analysis : Page
     {
-        IDocumentSession session = QuoteForm.DataDocumentStore.Instance.OpenSession();
+        IDocumentSession session = HttpContext.Current.GetOwinContext().Get<IDocumentSession>();
         Quote quote;
         string QuoteID;
 

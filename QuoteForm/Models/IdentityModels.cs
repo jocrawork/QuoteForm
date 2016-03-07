@@ -3,10 +3,16 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+//using Microsoft.AspNet.Identity.EntityFramework;
+using RavenDB.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using QuoteForm.Models;
+using Raven.Client;
+
+using System.Linq;
+using Raven.Client.Linq;
+using System.Collections.Generic;
 
 namespace QuoteForm.Models
 {
@@ -27,17 +33,58 @@ namespace QuoteForm.Models
         }
     }
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class RavenRole 
     {
-        
-        public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+        public string Id { get; set; }
+        public string Name { get; set; }
+
+        public RavenRole(string name)
         {
+            this.Name = name;
+        }
+    }
+
+    public class RavenRoleStore
+    {
+        protected DataDocumentStore context { get; set; }
+        protected IDocumentSession session { get; set; }
+
+        public RavenRoleStore()
+        {
+            session = QuoteForm.DataDocumentStore.Instance.OpenSession();
         }
 
-        public static ApplicationDbContext Create()
+        public void CreateRole(string name)
         {
-            return new ApplicationDbContext();
+            if (RoleExists(name)) return;
+            var role = new RavenRole(name);
+
+            session.Store(role);
+            session.SaveChanges();
+        }
+
+        public List<ApplicationUser> GetUsersInRole(string role)
+        {
+            List<ApplicationUser> users = session.Query<ApplicationUser>().ToList();
+            
+            foreach(var user in users)
+            {//remove any user that does not match role name to their Roles[]
+                if (!(user.Roles.Any(r => r == role)))
+                    users.Remove(user);
+            }
+
+            return users;
+        }
+
+        public List<RavenRole> GetAllRoles()
+        {
+            List<RavenRole> roles = session.Query<RavenRole>().ToList();
+            return roles;
+        }
+
+        public bool RoleExists(string name)
+        {
+            return session.Query<RavenRole>().Where(r => r.Name == name).Any();
         }
     }
 }

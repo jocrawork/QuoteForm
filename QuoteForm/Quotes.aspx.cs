@@ -14,7 +14,7 @@ namespace QuoteForm
 {
     public partial class Quotes : Page
     {
-        IDocumentSession session = QuoteForm.DataDocumentStore.Instance.OpenSession();
+        IDocumentSession session = HttpContext.Current.GetOwinContext().Get<IDocumentSession>();
         List<Quote> quotes;
         
         protected void Page_Load(object sender, EventArgs e)

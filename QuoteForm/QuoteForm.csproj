@@ -42,11 +42,12 @@
     <Reference Include="AjaxControlToolkit">
       <HintPath>..\packages\AjaxControlToolkit.15.1.2.0\lib\net40\AjaxControlToolkit.dll</HintPath>
     </Reference>
-    <Reference Include="AspNet.Identity.RavenDB">
-      <HintPath>..\packages\AspNet.Identity.RavenDB.1.0.1\lib\net45\AspNet.Identity.RavenDB.dll</HintPath>
-    </Reference>
     <Reference Include="Humanizer">
       <HintPath>..\packages\Humanizer.1.36.0\lib\portable-win+net40+sl50+wp8+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Humanizer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Raven.Abstractions">
@@ -141,14 +142,8 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNet.Identity.Core">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.1.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Owin">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.1.0\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.1.0\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Providers">
       <HintPath>..\packages\Microsoft.AspNet.Providers.Core.2.0.0\lib\net40\System.Web.Providers.dll</HintPath>
@@ -189,9 +184,6 @@
     <Content Include="App_Data\aspnet-QuoteForm-20150603093059_log.ldf">
       <DependentUpon>aspnet-QuoteForm-20150603093059.mdf</DependentUpon>
     </Content>
-    <Content Include="App_Data\Database\IndexDefinitions\indexes.txt" />
-    <Content Include="App_Data\Database\Indexes\indexes.txt" />
-    <Content Include="App_Data\Database\raven-data.ico" />
     <Content Include="Products.aspx" />
     <Content Include="Account\AddPhoneNumber.aspx" />
     <Content Include="Account\Confirm.aspx" />
@@ -220,11 +212,6 @@
     <Content Include="Quotes.aspx" />
     <Content Include="local.config" />
     <Content Include="Account\UserManagement.aspx" />
-    <Content Include="App_Data\Database\Data" />
-    <Content Include="App_Data\Database\logs\RVN.log" />
-    <Content Include="App_Data\Database\logs\RVNres00001.jrs" />
-    <Content Include="App_Data\Database\logs\RVNres00002.jrs" />
-    <Content Include="App_Data\Database\system\RVN.chk" />
     <None Include="Properties\PublishProfiles\TDS Server.pubxml" />
     <None Include="Properties\PublishProfiles\TDSSupport1 FTP.pubxml" />
     <None Include="Properties\Settings.settings">
@@ -459,8 +446,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\Database\IndexDefinitions\temp\" />
-    <Folder Include="App_Data\Database\temp\" />
+    <ProjectReference Include="..\..\RavenDB.AspNet.Identity\RavenDB.AspNet.Identity\RavenDB.AspNet.Identity.csproj">
+      <Project>{c147fa58-04f8-4139-9e6e-e3d72f3e30ec}</Project>
+      <Name>RavenDB.AspNet.Identity</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
