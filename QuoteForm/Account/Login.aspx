@@ -43,13 +43,10 @@
                         </div>
                     </div>
                 </div>
-                <p>
+                <p class="col-md-6">
                     <asp:HyperLink runat="server" ID="RegisterHyperLink" ViewStateMode="Disabled">Register as a new user</asp:HyperLink>
-                </p>
-                <p>
-                    <%-- Enable this once you have account confirmation enabled for password reset functionality
-                    <asp:HyperLink runat="server" ID="ForgotPasswordHyperLink" ViewStateMode="Disabled">Forgot your password?</asp:HyperLink>
-                    --%>
+                
+                    <asp:HyperLink runat="server" ID="ForgotPasswordHyperLink" class="pull-right" >Forgot your password?</asp:HyperLink>
                 </p>
             </section>
         </div>

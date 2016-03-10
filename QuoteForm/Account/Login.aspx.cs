@@ -19,9 +19,8 @@ namespace QuoteForm.Account
         protected void Page_Load(object sender, EventArgs e)
         {
             RegisterHyperLink.NavigateUrl = "Register";
-            // Enable this once you have account confirmation enabled for password reset functionality
-            //ForgotPasswordHyperLink.NavigateUrl = "Forgot";
-            //OpenAuthLogin.ReturnUrl = Request.QueryString["ReturnUrl"]; //I believe this is for social logins only
+            ForgotPasswordHyperLink.NavigateUrl = "Forgot";
+            
             var returnUrl = HttpUtility.UrlEncode(Request.QueryString["ReturnUrl"]);
             if (!String.IsNullOrEmpty(returnUrl))
             {

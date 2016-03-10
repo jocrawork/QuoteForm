@@ -20,6 +20,7 @@ namespace QuoteForm
         {
             List<Product> prods = session.Query<Product>()
                 .Customize(x => x.WaitForNonStaleResultsAsOfLastWrite())
+                .Take(int.MaxValue)     //by default, RavenDB only allows 128 items per request. idk why, they stoops
                 .ToList();
 
             if (!IsPostBack)

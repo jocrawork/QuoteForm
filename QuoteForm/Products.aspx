@@ -5,10 +5,16 @@
     <!-- disabled EventValidation above, probably a bit of a hack -->
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" type="text/javascript"></script>
-    <script src="scripts/jquery.quicksearch.js" type="text/javascript"></script>
+    <link href="Content/DataTables/css/jquery.dataTables.css" rel="stylesheet"/>
+    <script src="scripts/DataTables/jquery.dataTables.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            $('input#Filter').quicksearch('#products tbody tr');
+            $('#products').DataTable({
+                "bJQueryUI"     : true,
+                "bInfo"         : false,
+                "iDisplayLength": 25,
+                "sLengthMenu": false
+            });
         });
 
         function EmptyFieldCheck()
@@ -46,15 +52,12 @@
         </div>
     </div>
     <%} %>
-    <div>
-        <input type="text" id="Filter" placeholder="Search"/>
-    </div>
 
     <div>
         <!-- TODO: make this filterable -->
         <asp:Repeater ID="repProducts" runat="server" OnItemCommand="repProducts_ItemCommand"> 
             <HeaderTemplate>
-                <table id=products style="width:100%">
+                <table id=products style="width:100%" class="hover stripe compact">
                     <thead>
                         <tr style="font-weight: bold"><td>Category</td><td>Name</td><td>Part Number</td><td>Price</td><td>Cost</td><td>Default Quantity</td><%if(User.IsInRole("Admin")||User.IsInRole("Products")){ %><td>Options</td><%} %></tr>
                     </thead>

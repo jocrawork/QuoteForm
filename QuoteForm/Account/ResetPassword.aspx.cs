@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Owin;
 using QuoteForm.Models;
+using Raven.Client;
 
 namespace QuoteForm.Account
 {
@@ -24,7 +25,7 @@ namespace QuoteForm.Account
             {
                 var manager = Context.GetOwinContext().GetUserManager<ApplicationUserManager>();
 
-                var user = manager.FindByName(Email.Text);
+                var user = manager.FindByEmail(Email.Text);
                 if (user == null)
                 {
                     ErrorMessage.Text = "No user found";
@@ -33,6 +34,7 @@ namespace QuoteForm.Account
                 var result = manager.ResetPassword(user.Id, code, Password.Text);
                 if (result.Succeeded)
                 {
+                    Context.GetOwinContext().Get<IDocumentSession>().SaveChanges();
                     Response.Redirect("~/Account/ResetPasswordConfirmation");
                     return;
                 }
