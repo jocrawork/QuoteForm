@@ -59,7 +59,7 @@
             <HeaderTemplate>
                 <table id=products style="width:100%" class="hover stripe compact">
                     <thead>
-                        <tr style="font-weight: bold"><td>Category</td><td>Name</td><td>Part Number</td><td>Price</td><td>Cost</td><td>Default Quantity</td><%if(User.IsInRole("Admin")||User.IsInRole("Products")){ %><td>Options</td><%} %></tr>
+                        <tr style="font-weight: bold"><td>Category</td><td>Name</td><td>Part Number</td><td>Price</td><td>Cost</td><td>Quantity</td><%if(User.IsInRole("Admin")||User.IsInRole("Products")){ %><td>Options</td><%} %></tr>
                     </thead>
                     <tbody>
             </HeaderTemplate>

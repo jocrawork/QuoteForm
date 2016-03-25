@@ -115,6 +115,9 @@
     <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
       <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
     </Reference>
+    <Reference Include="Telerik.Web.UI">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Telerik\UI for ASP.NET AJAX Q1 2015\Bin45\Telerik.Web.UI.dll</HintPath>
+    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -184,6 +187,7 @@
     <Content Include="App_Data\aspnet-QuoteForm-20150603093059_log.ldf">
       <DependentUpon>aspnet-QuoteForm-20150603093059.mdf</DependentUpon>
     </Content>
+    <Content Include="AutoCompleteComboBox.sln" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap.css" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap.min.css" />
     <Content Include="Content\DataTables\css\autoFill.dataTables.css" />
@@ -321,6 +325,7 @@
     <Content Include="Account\UserManagement.aspx" />
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\common.scss" />
+    <Content Include="AutoCompleteComboBox.zip" />
     <None Include="Properties\PublishProfiles\TDS Server.pubxml" />
     <None Include="Properties\PublishProfiles\TDSSupport1 FTP.pubxml" />
     <None Include="Properties\Settings.settings">
@@ -538,6 +543,7 @@
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="Models\SuggestComboBox.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\Quote.cs" />
     <Compile Include="Products.aspx.cs">
@@ -623,6 +629,9 @@
       <Project>{c147fa58-04f8-4139-9e6e-e3d72f3e30ec}</Project>
       <Name>RavenDB.AspNet.Identity</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -38,6 +38,7 @@ C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\Sy
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\System.Web.Http.WebHost.dll
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\System.Web.Optimization.dll
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\System.Web.Providers.dll
+C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\Telerik.Web.UI.dll
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\WebGrease.dll
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\RavenDB.AspNet.Identity.pdb
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\Humanizer.pdb
@@ -54,6 +55,7 @@ C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\Sy
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\System.Web.Http.xml
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\System.Web.Http.WebHost.xml
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\System.Web.Optimization.xml
+C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\Telerik.Web.UI.xml
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\Antlr3.Runtime.pdb
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\Newtonsoft.Json.xml
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\Microsoft.AspNet.FriendlyUrls.xml
@@ -109,5 +111,6 @@ C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\zh
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\zh-Hans\Humanizer.resources.dll
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\zh-Hant\Humanizer.resources.dll
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\obj\Release\QuoteForm.csprojResolveAssemblyReference.cache
+C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\obj\Release\QuoteForm.dll.licenses
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\obj\Release\QuoteForm.dll
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\obj\Release\QuoteForm.pdb

@@ -12,6 +12,7 @@ using System.Web.Script.Services;
 using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Windows;
 using Humanizer;
 using System.Drawing;
 using Spire.Pdf;
@@ -19,12 +20,14 @@ using Spire.Pdf.Graphics;
 using Spire.Pdf.Tables;
 using Spire.Pdf.Grid;
 using System.Web.Http;
+using Telerik.Web.UI;
+using System.Collections;
 
 namespace QuoteForm
 {   
     public partial class _Default : Page
     {
-        IDocumentSession session = HttpContext.Current.GetOwinContext().Get<IDocumentSession>();        
+        IDocumentSession session = HttpContext.Current.GetOwinContext().Get<IDocumentSession>(); 
         Quote quote;
         string QuoteID;
 
@@ -146,10 +149,7 @@ namespace QuoteForm
             ExternalNotes.InnerText = quote.ExternalNotes;
 
         }
-        protected void SaveQuote(Object source, EventArgs e)
-        {
-            SaveQuote();
-        }
+        protected void SaveQuote(Object source, EventArgs e) { SaveQuote();}     
             protected void SaveQuote()
             {
                 var userManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
@@ -612,28 +612,20 @@ namespace QuoteForm
         
         protected void ProductSelected(Object source, EventArgs e)
         {
-            ComboBox temp = (ComboBox)source;
-            
-            List<Product> results = session.Query<Product>()
-                .Where(x => x.Name == temp.Text)
-                .ToList(); 
+            RadComboBox temp = (RadComboBox)source;
 
-            if(results.Count > 0)
+            Product p = session.Load<Product>()
+                .Where(x => x.Name == temp.SelectedValue.ToString())
+                .FirstOrDefault();
+
+            if(p.Name == temp.SelectedValue.ToString())
             {
-                Product p = results[0];
-
                 var repParent = temp.NamingContainer;
 
-                TextBox partNum     = (TextBox)repParent.FindControl("AddPartNumber");
-                TextBox partCost    = (TextBox)repParent.FindControl("AddPartCost");
-                TextBox unitPrice   = (TextBox)repParent.FindControl("AddUnitPrice");
-                TextBox quantity    = (TextBox)repParent.FindControl("AddQuantity");
-
-                partNum.Text        = p.PartNumber;
-                partCost.Text       = p.Cost.ToString();
-                unitPrice.Text      = p.Price.ToString();
-                quantity.Text       = p.DefaultQuantity.ToString();
-
+                ((TextBox)repParent.FindControl("AddPartNumber")).Text = p.PartNumber;
+                ((TextBox)repParent.FindControl("AddPartCost")).Text = p.Cost.ToString();
+                ((TextBox)repParent.FindControl("AddUnitPrice")).Text = p.Price.ToString();
+                ((TextBox)repParent.FindControl("AddQuantity")).Text = p.DefaultQuantity.ToString();
             }
         }
 
@@ -684,113 +676,26 @@ namespace QuoteForm
                     Response.Redirect(Request.RawUrl);
                 }
                 
-                //Server side attempt at empty field add line validation
-                    /*
-                else
-                {
-                    var cat = ((HiddenField)e.Item.FindControl("AddCategory")).Value.ToString();
-
-                    switch(cat)
-                    {
-                        case "Hardware":
-                            HWEmptyFieldAlert.Visible = true;
-                            break;
-                        case "Software":
-                            SWEmptyFieldAlert.Visible = true;
-                            break;
-                        case "ContentCreation":
-                            CCEmptyFieldAlert.Visible = true;
-                            break;
-                        case "Installation":
-                            InstEmptyFieldAlert.Visible = true;
-                            break;
-                        case "Recurring":
-                            RecEmptyFieldAlert.Visible = true;
-                            break;
-                    }
-                }
-                     */ 
+               
             }
         }
 
-        //DOESN'T WORK
-        /*
-        protected bool EmptyFieldCheck(RepeaterCommandEventArgs e)
+        protected void LoadProductsByCategory(Object source, EventArgs e)
         {
-            if (((ComboBox)e.Item.FindControl("AddProduct")).SelectedValue == null) return false;
-            else if ((((TextBox)e.Item.FindControl("AddPartNumber")).Text) == null) return false;
-            else if ((((TextBox)e.Item.FindControl("AddPartCost")).Text) == null) return false;
-            else if ((((TextBox)e.Item.FindControl("AddUnitPrice")).Text) == null) return false;
-            else if ((((TextBox)e.Item.FindControl("AddQuantity")).Text) == null) return false;
+            RadComboBox temp = (RadComboBox)source;
+            string category = ((HiddenField)temp.NamingContainer.FindControl("AddCategory")).Value.ToString();
 
-            else return true;
-        }
-        */
-
-        protected void LoadHardwareProducts(Object source, EventArgs e)
-        {
             List<Product> prods = session.Query<Product>()
-                .Where(x => x.Category == "Hardware")
+                .Where(x => x.Category == category)
+                .OrderBy(x => x.Name)
+                .Take(int.MaxValue)
                 .ToList();
 
-            ComboBox temp = (ComboBox)source;
-
-            foreach(Product p in prods)
-            {
-                temp.Items.Add(p.Name);
-            }
-        }
-        protected void LoadSoftwareProducts(Object source, EventArgs e)
-        {
-            List<Product> prods = session.Query<Product>()
-                .Where(x => x.Category == "Software")
-                .ToList();
-
-            ComboBox temp = (ComboBox)source;
+            temp.DefaultItem.Text = "Select a Product";
+            temp.DefaultItem.Value = "-1";
 
             foreach (Product p in prods)
-            {
-                temp.Items.Add(p.Name);
-            }
-        }
-        protected void LoadContentProducts(Object source, EventArgs e)
-        {
-            List<Product> prods = session.Query<Product>()
-                .Where(x => x.Category == "ContentCreation")
-                .ToList();
-
-            ComboBox temp = (ComboBox)source;
-
-            foreach (Product p in prods)
-            {
-                temp.Items.Add(p.Name);
-            }
-        }
-        protected void LoadInstallProducts(Object source, EventArgs e)
-        {
-            List<Product> prods = session.Query<Product>()
-                .Where(x => x.Category == "Installation")
-                .ToList();
-
-            ComboBox temp = (ComboBox)source;
-
-            foreach (Product p in prods)
-            {
-                temp.Items.Add(p.Name);
-            }
-        }
-        protected void LoadRecurringProducts(Object source, EventArgs e)
-        {
-            List<Product> prods = session.Query<Product>()
-                .Where(x => x.Category == "Recurring")
-                .ToList();
-
-            ComboBox temp = (ComboBox)source;
-
-            foreach (Product p in prods)
-            {
-                temp.Items.Add(p.Name);
-            }
+                temp.Items.Add(new RadComboBoxItem(p.Name));
         }
     }
 }

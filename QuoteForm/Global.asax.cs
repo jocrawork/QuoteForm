@@ -37,8 +37,10 @@ namespace QuoteForm
 
             NonAdminHttp.EnsureCanListenToWhenInNonAdminContext(8080);
 
+            instance.Conventions.MaxNumberOfRequestsPerSession = 1000; //this is frowned upon, default is 30. could have performance issues
             instance.Conventions.IdentityPartsSeparator = "-";
             instance.Initialize();
+            
             return instance.OpenSession();
         }
     }
