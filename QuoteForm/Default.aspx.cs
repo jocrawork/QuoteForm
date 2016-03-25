@@ -74,6 +74,8 @@ namespace QuoteForm
                 repRec.DataSource = quote.linesRec;
                 repRec.DataBind();
             }
+
+            //ScriptManager.RegisterAsyncPostBackControl();
         }
 
         protected void LoadQuote(string ID)
@@ -610,23 +612,22 @@ namespace QuoteForm
             }
         }
         
-        protected void ProductSelected(Object source, EventArgs e)
+        protected void ProductSelected(Object source, EventArgs e) //serverside product load
         {
             RadComboBox temp = (RadComboBox)source;
 
-            Product p = session.Load<Product>()
-                .Where(x => x.Name == temp.SelectedValue.ToString())
+            Product p = session.Query<Product>()
+                .Where(x => x.Name == temp.SelectedItem.Text)
                 .FirstOrDefault();
 
-            if(p.Name == temp.SelectedValue.ToString())
-            {
-                var repParent = temp.NamingContainer;
+           
+                var repParent = temp.Parent.NamingContainer;
 
                 ((TextBox)repParent.FindControl("AddPartNumber")).Text = p.PartNumber;
                 ((TextBox)repParent.FindControl("AddPartCost")).Text = p.Cost.ToString();
                 ((TextBox)repParent.FindControl("AddUnitPrice")).Text = p.Price.ToString();
                 ((TextBox)repParent.FindControl("AddQuantity")).Text = p.DefaultQuantity.ToString();
-            }
+            
         }
 
         protected void TaxStatusValidation(Object source, ServerValidateEventArgs e)
