@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 
 namespace QuoteForm
@@ -13,15 +14,13 @@ namespace QuoteForm
     public partial class Analysis : Page
     {
         IDocumentSession session = HttpContext.Current.GetOwinContext().Get<IDocumentSession>();
+        ApplicationUserManager manager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
         Quote quote;
         string QuoteID;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            
-            quote = session.Query<Quote>()
-                .Customize(x => x.WaitForNonStaleResultsAsOfLastWrite())
-                .FirstOrDefault(x => x.IsActive);
+            quote = session.Load<Quote>(session.Load<ApplicationUser>(User.Identity.GetUserId()).ActiveQuote);
             QuoteID = quote.Id;
 
             if (!IsPostBack)

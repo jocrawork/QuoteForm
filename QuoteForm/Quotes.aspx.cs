@@ -15,6 +15,7 @@ namespace QuoteForm
     public partial class Quotes : Page
     {
         IDocumentSession session = HttpContext.Current.GetOwinContext().Get<IDocumentSession>();
+        ApplicationUserManager manager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
         List<Quote> quotes;
         
         protected void Page_Load(object sender, EventArgs e)
@@ -49,8 +50,8 @@ namespace QuoteForm
                     if(q.Customer.Contact == "") //removes blank (new) quotes from DB when choosing another. should never be more than 1/user due to validation on Customer.Contact
                         session.Delete(q);
 
-                    q.IsActive = false;
-                    if (q.Id == e.CommandArgument.ToString()) q.IsActive = true;
+                    if (q.Id == e.CommandArgument.ToString())
+                        session.Load<ApplicationUser>(User.Identity.GetUserId()).ActiveQuote = q.Id;
                 }
 
                 session.SaveChanges();

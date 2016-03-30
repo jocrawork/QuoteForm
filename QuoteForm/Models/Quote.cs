@@ -58,7 +58,6 @@ namespace QuoteForm.Models
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public string Date { get; set; }
-        public bool IsActive { get; set; }
 
         public int QuoteLength { get; set; }
         public string PaymentTerms { get; set; } 
@@ -87,7 +86,6 @@ namespace QuoteForm.Models
         public Quote()
         {
             TaxExempt = null;
-            IsActive = false;
 
             Customer = new Address();
             Billing  = new Address();

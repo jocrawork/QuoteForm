@@ -27,35 +27,25 @@ namespace QuoteForm
 {   
     public partial class _Default : Page
     {
-        IDocumentSession session = HttpContext.Current.GetOwinContext().Get<IDocumentSession>(); 
+        IDocumentSession session = HttpContext.Current.GetOwinContext().Get<IDocumentSession>();
+        ApplicationUserManager manager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
         Quote quote;
         string QuoteID;
 
         protected void Page_Load(Object sender, EventArgs e)
         {
-            /*
-            quote = session.Query<Quote>()
-                .Customize(x => x.WaitForNonStaleResultsAsOfLastWrite())
-                .FirstOrDefault(x => x.IsActive);
-            QuoteID = quote.Id;
-             */
 
-            List<Quote> DBquotes = session.Query<Quote>()
-            .Customize(x => x.WaitForNonStaleResultsAsOfLastWrite())
-            .ToList();
+            //var active = manager.FindById(userID).ActiveQuote;
+               //this usermanager is crap ever since I went to users in RavenDB
 
-            foreach (Quote q in DBquotes)
-            {
-                if (q.IsActive)
-                {
-                    QuoteID = q.Id;
-                    quote = session.Load<Quote>(q.Id);
-                }
-            }
+            var user = session.Load<ApplicationUser>(User.Identity.GetUserId());
 
-            if (QuoteID == null) NewQuote();
-            
-            
+            //load active quote for current user
+            if (user.ActiveQuote != null) quote = session.Load<Quote>(user.ActiveQuote);
+            else
+                NewQuote();
+                QuoteID = quote.Id;
+                                    
             if (!IsPostBack)
             {
                 LoadQuote(QuoteID);
@@ -154,7 +144,6 @@ namespace QuoteForm
         protected void SaveQuote(Object source, EventArgs e) { SaveQuote();}     
             protected void SaveQuote()
             {
-                var userManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
                 
                 if (quote == null)
                 {
@@ -166,7 +155,7 @@ namespace QuoteForm
                     quote.Owner = Owner.Text;
                     quote.Date = Date.Text;
                     quote.PhoneNumber = PhoneNumber.Text;
-                    quote.Email = userManager.FindById(User.Identity.GetUserId()).Email.ToString();
+                    quote.Email = manager.FindById(User.Identity.GetUserId()).Email.ToString();
                     if (QuoteLength.Text != "") quote.QuoteLength = Convert.ToInt32(QuoteLength.Text);
                     quote.PaymentTerms = PaymentTermsDDL.SelectedValue;
 
@@ -226,9 +215,10 @@ namespace QuoteForm
         protected void CopyQuote(Object source, EventArgs e)
         {
             Quote temp = new Quote(quote);
-            quote.IsActive = false;
 
-            temp.IsActive = true;
+            var user = session.Load<ApplicationUser>(User.Identity.GetUserId());
+                user.ActiveQuote = temp.Id;
+
             session.Store(temp);
 
             session.SaveChanges();
@@ -236,13 +226,16 @@ namespace QuoteForm
         protected void NewQuote(Object source, EventArgs e) {NewQuote();} 
             protected void NewQuote()
         {
-            if(quote != null) 
-                quote.IsActive = false;
-            quote = new Quote();
-                quote.IsActive = true;
-                QuoteID = quote.Id;
-
+            var user = session.Load<ApplicationUser>(User.Identity.GetUserId());
+                
+                quote = new Quote();
+            
             session.Store(quote);
+
+            user.ActiveQuote = quote.Id;
+            QuoteID = quote.Id;
+
+
             session.SaveChanges();
             Response.Redirect(Request.RawUrl);
         }
@@ -615,19 +608,22 @@ namespace QuoteForm
         protected void ProductSelected(Object source, EventArgs e) //serverside product load
         {
             RadComboBox temp = (RadComboBox)source;
+            Product p;
 
-            Product p = session.Query<Product>()
-                .Where(x => x.Name == temp.SelectedItem.Text)
-                .FirstOrDefault();
+            if (temp.SelectedIndex > 0)
+            {
+                p = session.Query<Product>()
+                    .Where(x => x.Name == temp.SelectedItem.Text)
+                    .FirstOrDefault();
 
-           
-                var repParent = temp.Parent.NamingContainer;
+                var repParent = temp.Parent;
+                //var repParent = ((UpdatePanel)temp.NamingContainer.FindControl("UpdateHardwareLine")).ContentTemplateContainer;
 
                 ((TextBox)repParent.FindControl("AddPartNumber")).Text = p.PartNumber;
                 ((TextBox)repParent.FindControl("AddPartCost")).Text = p.Cost.ToString();
                 ((TextBox)repParent.FindControl("AddUnitPrice")).Text = p.Price.ToString();
                 ((TextBox)repParent.FindControl("AddQuantity")).Text = p.DefaultQuantity.ToString();
-            
+            }
         }
 
         protected void TaxStatusValidation(Object source, ServerValidateEventArgs e)
@@ -665,7 +661,7 @@ namespace QuoteForm
                     LineItem line = new LineItem();
 
                     line.Product.Category = ((HiddenField)e.Item.FindControl("AddCategory")).Value.ToString();
-                    line.Product.Name = ((ComboBox)e.Item.FindControl("AddProduct")).SelectedValue.ToString();
+                    line.Product.Name = ((RadComboBox)e.Item.FindControl("AddProduct")).SelectedItem.Text;
                     line.Product.PartNumber = ((TextBox)e.Item.FindControl("AddPartNumber")).Text;
                     line.Product.Cost = Convert.ToDouble(((TextBox)e.Item.FindControl("AddPartCost")).Text);
                     line.Product.Price = Convert.ToDouble(((TextBox)e.Item.FindControl("AddUnitPrice")).Text);

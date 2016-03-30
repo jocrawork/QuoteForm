@@ -298,30 +298,30 @@
 
     <h3 style="text-align:center">Hardware</h3>
     <div class="well" style="width:100%">
-        <asp:Repeater ID="repHW" runat="server" OnItemCommand="rep_ItemCommand">
-            <HeaderTemplate>
-                <table style="width:100%; padding-bottom:10px" id="HWtable">
-                    <tr style="font-weight: bold"><td>Product</td><td>Part Number</td><td>Cost</td><td>Unit Price</td><td>Quantity</td><td>Price</td><td>Delete</td></tr>
-            </HeaderTemplate>
-            <ItemTemplate>
-                <tr>
-                    <asp:HiddenField ID="Category" Value="Hardware" runat="server"/>
-                    <td><asp:Label ID="Product" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Name") %>' /></td> <!--TODO: make this clickable to edit -->
-                    <td><asp:Label ID="PartNumber" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.PartNumber") %>' /></td>
-                    <td><asp:Label ID="PartCost" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Cost") %>' /></td>
-                    <td><asp:Label ID="UnitPrice" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Price") %>' /></td>
-                    <td><asp:Label ID="Quantity" runat="server" Text='<%# Eval("Quantity") %>' /></td>
-                    <td><asp:Label ID="Price" runat="server" Text='<%# Eval("Total") %>' /></td>
-                    <td><asp:Button class="btn btn-danger" ID="DeleteHardware" runat="server" Text="Delete" CommandName="Delete" CommandArgument='<%# Container.ItemIndex %>'/></td>
-                </tr>
-            </ItemTemplate>
-            <FooterTemplate>
-                <tr>
-                    <asp:UpdatePanel ID="UpdateHardwareLine" updatemode="Conditional" runat="server" ChildrenAsTriggers="true">
-                        <Triggers>
-                            <asp:AsyncPostBackTrigger ControlID="AddProduct" EventName="SelectedIndexChanged" />
-                        </Triggers>
-                        <ContentTemplate>
+        <asp:UpdatePanel ID="UpdateHardwareLine" updatemode="Conditional" runat="server" ChildrenAsTriggers="true">
+            <Triggers>
+                
+            </Triggers>
+            <ContentTemplate>
+                <asp:Repeater ID="repHW" runat="server" OnItemCommand="rep_ItemCommand">
+                    <HeaderTemplate>
+                        <table style="width:100%; padding-bottom:10px" id="HWtable">
+                            <tr style="font-weight: bold"><td>Product</td><td>Part Number</td><td>Cost</td><td>Unit Price</td><td>Quantity</td><td>Price</td><td>Delete</td></tr>
+                    </HeaderTemplate>
+                    <ItemTemplate>
+                        <tr>
+                            <asp:HiddenField ID="Category" Value="Hardware" runat="server"/>
+                            <td><asp:Label ID="Product" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Name") %>' /></td> <!--TODO: make this clickable to edit -->
+                            <td><asp:Label ID="PartNumber" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.PartNumber") %>' /></td>
+                            <td><asp:Label ID="PartCost" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Cost") %>' /></td>
+                            <td><asp:Label ID="UnitPrice" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Price") %>' /></td>
+                            <td><asp:Label ID="Quantity" runat="server" Text='<%# Eval("Quantity") %>' /></td>
+                            <td><asp:Label ID="Price" runat="server" Text='<%# Eval("Total") %>' /></td>
+                            <td><asp:Button class="btn btn-danger" ID="DeleteHardware" runat="server" Text="Delete" CommandName="Delete" CommandArgument='<%# Container.ItemIndex %>'/></td>
+                        </tr>
+                    </ItemTemplate>
+                    <FooterTemplate>
+                        <tr>
                             <asp:HiddenField ID="AddCategory" Value="Hardware" runat="server"/>
                             <td><telerik:RadComboBox runat="server" ID="AddProduct" ClientIDMode="static" Filter="Contains" EnableLoadOnDemand="true" AutoPostBack="true" OnSelectedIndexChanged="ProductSelected" OnDataBinding="LoadProductsByCategory"/></td>
                             <td><asp:TextBox runat="server" ID="AddPartNumber" ClientIDMode="static"/></td>
@@ -329,15 +329,14 @@
                             <td><asp:TextBox runat="server" ID="AddUnitPrice" ClientIDMode="static"/></td>
                             <td><asp:TextBox runat="server" ID="AddQuantity" ClientIDMode="static"/></td>
                             <td><asp:Button class="btn btn-success" ID="AddHardware" runat="server" Text="Add" CommandName="Add" CommandArgument='<%# DataBinder.Eval(Container, "ItemIndex") %>' onClientClick="return EmptyFieldCheck('Hardware');"/></td>
-                        </ContentTemplate>
-                    </asp:UpdatePanel>
-                </tr></table>    
-            </FooterTemplate>
-        </asp:Repeater>
-            
-        <div id="HWEmptyFieldAlert" class="alert alert-danger" style="display:none" runat="server" ClientIDMode="Static">
-            <p>Please fill in all fields before trying to add a line item!</p>
-        </div>
+                        </tr></table>
+                    </FooterTemplate>
+                </asp:Repeater>
+                <div id="HWEmptyFieldAlert" class="alert alert-danger" style="display:none" runat="server" ClientIDMode="Static">
+                    <p>Please fill in all fields before trying to add a line item!</p>
+                 </div>
+            </ContentTemplate>
+        </asp:UpdatePanel>
     </div>
     
     <h3 style="text-align:center">Software</h3>
