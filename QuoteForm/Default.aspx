@@ -4,6 +4,7 @@
 
     <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
     <%@ Register TagPrefix="telerik" Namespace="Telerik.Web.UI" Assembly="Telerik.Web.UI" %> 
+    <telerik:RadAjaxManager ID="AjaxManager" runat="server"></telerik:RadAjaxManager>
 
     <script type="text/javascript">
 
@@ -323,7 +324,7 @@
                     <FooterTemplate>
                         <tr>
                             <asp:HiddenField ID="AddCategory" Value="Hardware" runat="server"/>
-                            <td><telerik:RadComboBox runat="server" ID="AddProduct" ClientIDMode="static" Filter="Contains" EnableLoadOnDemand="true" AutoPostBack="true" OnSelectedIndexChanged="ProductSelected" OnDataBinding="LoadProductsByCategory"/></td>
+                            <td><telerik:RadComboBox runat="server" ID="AddProduct" Filter="Contains" AutoPostBack="true" OnSelectedIndexChanged="ProductSelected" OnDataBinding="LoadProductsByCategory"/></td>
                             <td><asp:TextBox runat="server" ID="AddPartNumber" ClientIDMode="static"/></td>
                             <td><asp:TextBox runat="server" ID="AddPartCost" ClientIDMode="static"/></td>
                             <td><asp:TextBox runat="server" ID="AddUnitPrice" ClientIDMode="static"/></td>
@@ -341,36 +342,43 @@
     
     <h3 style="text-align:center">Software</h3>
     <div class="well" style="width:100%">
-        <asp:Repeater ID="repSW" runat="server" OnItemCommand="rep_ItemCommand">
-            <HeaderTemplate>
-                <table style="width:100%" id="SWtable">
-                    <tr style="font-weight: bold"><td>Product</td><td>Part Number</td><td>Cost</td><td>Unit Price</td><td>Quantity</td><td>Price</td><td>Delete</td></tr>
-            </HeaderTemplate>
-            <ItemTemplate>
-                    <tr>
-                        <asp:HiddenField ID="Category" Value="Software" runat="server"/>
-                        <td><asp:Label ID="Product" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Name") %>' /></td> <!--TODO: make this clickable to edit -->
-                        <td><asp:Label ID="PartNumber" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.PartNumber") %>' /></td>
-                        <td><asp:Label ID="PartCost" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Cost") %>' /></td>
-                        <td><asp:Label ID="UnitPrice" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Price") %>' /></td>
-                        <td><asp:Label ID="Quantity" runat="server" Text='<%# Eval("Quantity") %>' /></td>
-                        <td><asp:Label ID="Price" runat="server" Text='<%# Eval("Total") %>' /></td>
-                        <td><asp:Button class="btn btn-danger" ID="DeleteSoftware" runat="server" Text="Delete" CommandName="Delete" CommandArgument='<%# Container.ItemIndex %>'/></td>
-                    </tr>
-            </ItemTemplate>
-            <FooterTemplate>
-                    <tr>
-                        <asp:HiddenField ID="AddCategory" Value="Software" runat="server"/>
-                        <td><telerik:RadComboBox runat="server" ID="AddProduct" Filter="Contains" EmptyMessage="" OnSelectedIndexChanged="ProductSelected" OnDataBinding="LoadProductsByCategory"/></td>
-                        <td><asp:TextBox runat="server" ID="AddPartNumber" ClientIDMode="static" /></td>
-                        <td><asp:TextBox runat="server" ID="AddPartCost" ClientIDMode="static" /></td>
-                        <td><asp:TextBox runat="server" ID="AddUnitPrice" ClientIDMode="static" /></td>
-                        <td><asp:TextBox runat="server" ID="AddQuantity" ClientIDMode="static" /></td>
-                        <td><asp:Button class="btn btn-success" ID="AddSoftware" runat="server" Text="Add" CommandName="Add" CommandArgument='<%# Container.ItemIndex %>' onClientClick="return EmptyFieldCheck('Software');"/></td>
-                    </tr>
-                </table>
-            </FooterTemplate>
-        </asp:Repeater>
+        <asp:UpdatePanel ID="UpdatePanel1" updatemode="Conditional" runat="server" ChildrenAsTriggers="true">
+            <Triggers>
+                
+            </Triggers>
+            <ContentTemplate>
+                <asp:Repeater ID="repSW" runat="server" OnItemCommand="rep_ItemCommand">
+                    <HeaderTemplate>
+                        <table style="width:100%" id="SWtable">
+                            <tr style="font-weight: bold"><td>Product</td><td>Part Number</td><td>Cost</td><td>Unit Price</td><td>Quantity</td><td>Price</td><td>Delete</td></tr>
+                    </HeaderTemplate>
+                    <ItemTemplate>
+                            <tr>
+                                <asp:HiddenField ID="Category" Value="Software" runat="server"/>
+                                <td><asp:Label ID="Product" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Name") %>' /></td> <!--TODO: make this clickable to edit -->
+                                <td><asp:Label ID="PartNumber" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.PartNumber") %>' /></td>
+                                <td><asp:Label ID="PartCost" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Cost") %>' /></td>
+                                <td><asp:Label ID="UnitPrice" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Price") %>' /></td>
+                                <td><asp:Label ID="Quantity" runat="server" Text='<%# Eval("Quantity") %>' /></td>
+                                <td><asp:Label ID="Price" runat="server" Text='<%# Eval("Total") %>' /></td>
+                                <td><asp:Button class="btn btn-danger" ID="DeleteSoftware" runat="server" Text="Delete" CommandName="Delete" CommandArgument='<%# Container.ItemIndex %>'/></td>
+                            </tr>
+                    </ItemTemplate>
+                    <FooterTemplate>
+                            <tr>
+                                <asp:HiddenField ID="AddCategory" Value="Software" runat="server"/>
+                                <td><telerik:RadComboBox runat="server" ID="AddProduct" Filter="Contains" AutoPostBack="true" OnSelectedIndexChanged="ProductSelected" OnDataBinding="LoadProductsByCategory"/></td>
+                                <td><asp:TextBox runat="server" ID="AddPartNumber" ClientIDMode="static" /></td>
+                                <td><asp:TextBox runat="server" ID="AddPartCost" ClientIDMode="static" /></td>
+                                <td><asp:TextBox runat="server" ID="AddUnitPrice" ClientIDMode="static" /></td>
+                                <td><asp:TextBox runat="server" ID="AddQuantity" ClientIDMode="static" /></td>
+                                <td><asp:Button class="btn btn-success" ID="AddSoftware" runat="server" Text="Add" CommandName="Add" CommandArgument='<%# Container.ItemIndex %>' onClientClick="return EmptyFieldCheck('Software');"/></td>
+                            </tr>
+                        </table>
+                    </FooterTemplate>
+                </asp:Repeater>
+            </ContentTemplate>
+        </asp:UpdatePanel>
         <div id="SWEmptyFieldAlert" class="alert alert-danger" style="display:none" runat="server" ClientIDMode="Static">
             <p>Please fill in all fields before trying to add a line item!</p>
         </div>
@@ -398,7 +406,7 @@
             <FooterTemplate>
                     <tr>
                         <asp:HiddenField ID="AddCategory" Value="ContentCreation" runat="server"/>
-                        <td><telerik:RadComboBox runat="server" ID="AddProduct" Filter="Contains" EmptyMessage="" OnSelectedIndexChanged="ProductSelected" OnDataBinding="LoadProductsByCategory"/></td>
+                        <td><telerik:RadComboBox runat="server" ID="AddProduct" Filter="Contains" AutoPostBack="true" OnSelectedIndexChanged="ProductSelected" OnDataBinding="LoadProductsByCategory"/></td>
                         <td><asp:TextBox runat="server" ID="AddPartNumber" ClientIDMode="static" /></td>
                         <td><asp:TextBox runat="server" ID="AddPartCost" ClientIDMode="static" /></td>
                         <td><asp:TextBox runat="server" ID="AddUnitPrice" ClientIDMode="static" /></td>
@@ -435,7 +443,7 @@
             <FooterTemplate>
                     <tr>
                         <asp:HiddenField ID="AddCategory" Value="Installation" runat="server"/>
-                        <td><telerik:RadComboBox runat="server" ID="AddProduct" Filter="Contains" EmptyMessage="" OnSelectedIndexChanged="ProductSelected" OnDataBinding="LoadProductsByCategory"/></td>
+                        <td><telerik:RadComboBox runat="server" ID="AddProduct" Filter="Contains" AutoPostBack="true" OnSelectedIndexChanged="ProductSelected" OnDataBinding="LoadProductsByCategory"/></td>
                         <td><asp:TextBox runat="server" ID="AddPartNumber" ClientIDMode="static" /></td>
                         <td><asp:TextBox runat="server" ID="AddPartCost" ClientIDMode="static" /></td>
                         <td><asp:TextBox runat="server" ID="AddUnitPrice" ClientIDMode="static" /></td>
@@ -476,7 +484,7 @@
             <FooterTemplate>
                     <tr>
                         <asp:HiddenField ID="AddCategory" Value="Recurring" runat="server"/>
-                        <td><telerik:RadComboBox runat="server" ID="AddProduct" Filter="Contains" EmptyMessage="" OnSelectedIndexChanged="ProductSelected" OnDataBinding="LoadProductsByCategory"/></td>
+                        <td><telerik:RadComboBox runat="server" ID="AddProduct" Filter="Contains" AutoPostBack="true" OnSelectedIndexChanged="ProductSelected" OnDataBinding="LoadProductsByCategory"/></td>
                         <td><asp:TextBox runat="server" ID="AddPartNumber" ClientIDMode="static" /></td>
                         <td><asp:TextBox runat="server" ID="AddPartCost" ClientIDMode="static" /></td>
                         <td><asp:TextBox runat="server" ID="AddUnitPrice" ClientIDMode="static" /></td>
@@ -528,7 +536,7 @@
         </span>
         <span style="float:right">
             <asp:Button class="btn btn-warning" ID="SaveQuoteB2" runat="server" Text="Save" OnClick="SaveQuote"/>
-            <asp:Button class="btn btn-danger" ID="PrintQuoteB2" runat="server" Text="PDF" OnClick="PDFQuote"/>
+            <asp:Button class="btn btn-danger" ID="PrintQuoteB2" runat="server" Text="PDF" OnClientClick="return PdfFileNamePrompt()" OnClick="PDFQuote"/>
         </span>
     </div>
 

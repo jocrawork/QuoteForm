@@ -610,7 +610,7 @@ namespace QuoteForm
             RadComboBox temp = (RadComboBox)source;
             Product p;
 
-            if (temp.SelectedIndex > 0)
+            if (temp.SelectedIndex >= 0)
             {
                 p = session.Query<Product>()
                     .Where(x => x.Name == temp.SelectedItem.Text)

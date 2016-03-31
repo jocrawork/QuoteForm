@@ -9,6 +9,7 @@ using Owin;
 using QuoteForm.Models;
 using System.Web.Http;
 using System.Threading.Tasks;
+using Raven.Client;
 
 namespace QuoteForm.Account
 {
@@ -38,13 +39,15 @@ namespace QuoteForm.Account
                 // Validate the user password
                 var manager = Context.GetOwinContext().GetUserManager<ApplicationUserManager>();
                 var signinManager = Context.GetOwinContext().GetUserManager<ApplicationSignInManager>();
+                var session = Context.GetOwinContext().Get<IDocumentSession>();
 
                 // This doen't count login failures towards account lockout
                 // To enable password failures to trigger lockout, change to shouldLockout: true
    
                 var user = manager.FindByEmail(Email.Text);
-
+                
                 var result = new SignInStatus();
+                
                 
                 
                 if(user.IsEmailConfirmed)

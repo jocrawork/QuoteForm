@@ -1,3 +1,5 @@
+C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\obj\Release\QuoteForm.csprojResolveAssemblyReference.cache
+C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\obj\Release\QuoteForm.dll.licenses
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\Raven.Studio.Html5.zip
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\QuoteForm.dll.config
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\QuoteForm.dll
@@ -110,7 +112,5 @@ C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\vi
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\zh-CN\Humanizer.resources.dll
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\zh-Hans\Humanizer.resources.dll
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\bin\zh-Hant\Humanizer.resources.dll
-C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\obj\Release\QuoteForm.csprojResolveAssemblyReference.cache
-C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\obj\Release\QuoteForm.dll.licenses
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\obj\Release\QuoteForm.dll
 C:\Users\JC185344\Documents\VisualStudio2013\Projects\QuoteForm\QuoteForm\obj\Release\QuoteForm.pdb

@@ -13,6 +13,15 @@ namespace QuoteForm {
     public partial class _Default {
         
         /// <summary>
+        /// AjaxManager control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Telerik.Web.UI.RadAjaxManager AjaxManager;
+        
+        /// <summary>
         /// Owner control.
         /// </summary>
         /// <remarks>
@@ -497,6 +506,15 @@ namespace QuoteForm {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl HWEmptyFieldAlert;
+        
+        /// <summary>
+        /// UpdatePanel1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
         
         /// <summary>
         /// repSW control.
