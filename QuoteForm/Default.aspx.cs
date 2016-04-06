@@ -67,7 +67,7 @@ namespace QuoteForm
                 repRec.DataBind();
             }
 
-            //ScriptManager.RegisterAsyncPostBackControl();
+            
         }
 
         protected void LoadQuote(string ID)
@@ -79,7 +79,7 @@ namespace QuoteForm
             PhoneNumber.Text = quote.PhoneNumber;
             if (PhoneNumber.Text == "") PhoneNumber.Text = userManager.FindById(User.Identity.GetUserId()).PhoneNumber.ToString();
             Date.Text = quote.Date;
-            if (Date.Text == "") Date.Text = DateTime.Today.ToShortDateString();
+            if (Date.Text == "") Date.Text = DateTime.Today.ToString("MM'-'dd'-'yyyy");
             if (quote.QuoteLength == 0) QuoteLength.Text = "";
             else QuoteLength.Text = quote.QuoteLength.ToString();
 
@@ -644,6 +644,9 @@ namespace QuoteForm
 
         protected void rep_ItemCommand(Object source, RepeaterCommandEventArgs e)
         {
+            SaveQuote(); //hopefully temporary, but ensures address info persists
+                //would like to replace by making these buttons update the UpdatePanel instead of the whole page
+
             if (e.CommandName == "Delete")
             {
                 int index = Convert.ToInt32(e.CommandArgument);
@@ -696,5 +699,7 @@ namespace QuoteForm
             foreach (Product p in prods)
                 temp.Items.Add(new RadComboBoxItem(p.Name));
         }
+
+        
     }
 }

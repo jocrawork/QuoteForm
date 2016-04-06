@@ -1,4 +1,4 @@
-﻿ <%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="QuoteForm._Default" MaintainScrollPositionOnPostback="true"%>
+﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="QuoteForm._Default" MaintainScrollPositionOnPostback="true"%>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -17,8 +17,11 @@
 
         function PdfFileNamePrompt()
         {
-            var filename = prompt("What would you like to name the PDF?", "Company_Date.pdf");
-            if (filename == null) filename = "CANCELDONOTMAKE";
+            var company = $("#CustCompany").val();
+            var date = $("#MainContent_Date").val();
+
+            var filename = prompt("What would you like to name the PDF?", company+"_"+date+".pdf");
+            if (filename == null|| "") filename = "CANCELDONOTMAKE";
 
             document.getElementById('PdfFileName').value = filename;
         }
@@ -141,7 +144,7 @@
            
         </span>
         <span style="float:right">
-            <asp:Textbox runat="server" ID="Date" type="text"  placeholder="Date (MM/dd/YYYY)" class="required"/>
+            <asp:Textbox runat="server" ID="Date" type="text"  placeholder="Date (MM-dd-YYYY)" class="required"/>
             <asp:Textbox runat="server" ID="QuoteLength" type="text" placeholder="Quote Length (Days)"/>
             <asp:DropDownList ID="PaymentTermsDDL" name="Source" runat="server">
                 <asp:ListItem Value=null>--Select Payment Terms--</asp:ListItem>
@@ -318,7 +321,7 @@
                             <td><asp:Label ID="UnitPrice" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Price") %>' /></td>
                             <td><asp:Label ID="Quantity" runat="server" Text='<%# Eval("Quantity") %>' /></td>
                             <td><asp:Label ID="Price" runat="server" Text='<%# Eval("Total") %>' /></td>
-                            <td><asp:Button class="btn btn-danger" ID="DeleteHardware" runat="server" Text="Delete" CommandName="Delete" CommandArgument='<%# Container.ItemIndex %>'/></td>
+                            <td><asp:Button class="btn btn-danger" ID="DeleteHardware" ClientIDMode="Static" runat="server" Text="Delete" CommandName="Delete" CommandArgument='<%# Container.ItemIndex %>'/></td>
                         </tr>
                     </ItemTemplate>
                     <FooterTemplate>
@@ -329,7 +332,7 @@
                             <td><asp:TextBox runat="server" ID="AddPartCost" ClientIDMode="static"/></td>
                             <td><asp:TextBox runat="server" ID="AddUnitPrice" ClientIDMode="static"/></td>
                             <td><asp:TextBox runat="server" ID="AddQuantity" ClientIDMode="static"/></td>
-                            <td><asp:Button class="btn btn-success" ID="AddHardware" runat="server" Text="Add" CommandName="Add" CommandArgument='<%# DataBinder.Eval(Container, "ItemIndex") %>' onClientClick="return EmptyFieldCheck('Hardware');"/></td>
+                            <td><asp:Button class="btn btn-success" ID="AddHardware" ClientIDMode="Static" runat="server" Text="Add" CommandName="Add" CommandArgument='<%# DataBinder.Eval(Container, "ItemIndex") %>' onClientClick="return EmptyFieldCheck('Hardware');"/></td>
                         </tr></table>
                     </FooterTemplate>
                 </asp:Repeater>
@@ -344,7 +347,7 @@
     <div class="well" style="width:100%">
         <asp:UpdatePanel ID="UpdatePanel1" updatemode="Conditional" runat="server" ChildrenAsTriggers="true">
             <Triggers>
-                
+                <asp:AsyncPostBackTrigger ControlID="repSW"/>
             </Triggers>
             <ContentTemplate>
                 <asp:Repeater ID="repSW" runat="server" OnItemCommand="rep_ItemCommand">
