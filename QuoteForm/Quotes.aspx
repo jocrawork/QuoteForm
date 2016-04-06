@@ -51,7 +51,7 @@
             </HeaderTemplate>
             <ItemTemplate>
                      
-                    <tr class="<%# QuoteClass(Eval("Owner").ToString()) %>">
+                    <tr class="<%# QuoteClass(Eval("Owner"))%>">
                         <asp:HiddenField ID="HiddenField1" runat="server" Value='<%#Eval("Id") %>'/>
                         <td><asp:LinkButton ID="QuoteCustomer" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Customer.Contact") %>' CommandName="Choose" CommandArgument='<%# Eval("Id") %>'/></td>
                         <td><asp:Label ID="QuoteCompany" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Customer.Company") %>' /></td>

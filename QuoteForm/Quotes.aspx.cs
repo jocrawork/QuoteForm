@@ -47,9 +47,9 @@ namespace QuoteForm
             {
                 foreach(Quote q in quotes)
                 {
-                    if(q.Customer.Contact == "") //removes blank (new) quotes from DB when choosing another. should never be more than 1/user due to validation on Customer.Contact
+                    if (q.Customer.Contact == "") //removes blank (new) quotes from DB when choosing another. should never be more than 1/user due to validation on Customer.Contact
                         session.Delete(q);
-
+                    
                     if (q.Id == e.CommandArgument.ToString())
                         session.Load<ApplicationUser>(User.Identity.GetUserId()).ActiveQuote = q.Id;
                 }
@@ -71,9 +71,15 @@ namespace QuoteForm
 
         }
 
-        public string QuoteClass(string user)
+        public string QuoteClass(object user)
         {
-            return (user == User.Identity.Name) ? "myquote" : "otherquote";
+            string temp;
+
+            if (user == null) //bypasses newquotes without customer info saved. these are cleaned up in the 'Choose' ItemCommand above.
+                temp = ""; 
+            else temp = user.ToString();
+
+            return (temp == User.Identity.Name) ? "myquote" : "otherquote";
         }
 
         public string GetGrandTotalString(Quote q)

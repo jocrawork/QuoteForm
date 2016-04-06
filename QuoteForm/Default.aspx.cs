@@ -41,10 +41,12 @@ namespace QuoteForm
             var user = session.Load<ApplicationUser>(User.Identity.GetUserId());
 
             //load active quote for current user
-            if (user.ActiveQuote != null) quote = session.Load<Quote>(user.ActiveQuote);
-            else
-                NewQuote();
+            if (user.ActiveQuote != null)
+            {
+                quote = session.Load<Quote>(user.ActiveQuote);
                 QuoteID = quote.Id;
+            }
+            else NewQuote();
                                     
             if (!IsPostBack)
             {
