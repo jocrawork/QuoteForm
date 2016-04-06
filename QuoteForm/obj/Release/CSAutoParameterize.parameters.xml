@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="RavenDB-Web.config Connection String" description="RavenDB Connection String used in web.config by the application to access the database." defaultValue="URL = http://10.0.0.56:8080;Database=QuoteForm;user=administrator;password=4aqutA2a" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\JC185344\\Documents\\VisualStudio2013\\Projects\\QuoteForm\\QuoteForm\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='RavenDB']/@connectionString" />
+  </parameter>
+</parameters>
