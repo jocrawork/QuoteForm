@@ -128,12 +128,12 @@ namespace QuoteForm
             
 
             //TOTALS SECTION
-            HWtotalCell.Text    = quote.TotalLines("Hardware").ToString();
-            SWtotalCell.Text    = quote.TotalLines("Software").ToString();
-            CCtotalCell.Text    = quote.TotalLines("ContentCreation").ToString();
-            INSTtotalCell.Text  = quote.TotalLines("Installation").ToString();
-            RECtotalCell.Text   = quote.TotalLines("Recurring").ToString();
-            TotalCell.Text      = quote.GetGrandTotal().ToString();
+            HWtotalCell.Text    = quote.TotalLines("Hardware").ToString("C2");
+            SWtotalCell.Text = quote.TotalLines("Software").ToString("C2");
+            CCtotalCell.Text = quote.TotalLines("ContentCreation").ToString("C2");
+            INSTtotalCell.Text = quote.TotalLines("Installation").ToString("C2");
+            RECtotalCell.Text = quote.TotalLines("Recurring").ToString("C2");
+            TotalCell.Text = quote.GetGrandTotal().ToString("C2");
 
             if (quote.Freight == 0) Freight.Text = "";
                 else Freight.Text = quote.Freight.ToString();

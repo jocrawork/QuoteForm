@@ -84,7 +84,7 @@ namespace QuoteForm
 
         public string GetGrandTotalString(Quote q)
         {
-            return q.GetGrandTotal().ToString();
+            return q.GetGrandTotal().ToString("C2");
         }
     }
 }
