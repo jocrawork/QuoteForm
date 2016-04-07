@@ -44,9 +44,10 @@ namespace QuoteForm
             if (user.ActiveQuote != null)
             {
                 quote = session.Load<Quote>(user.ActiveQuote);
-                QuoteID = quote.Id;
+                if(quote != null) QuoteID = quote.Id;
             }
-            else NewQuote();
+            if(quote == null) //catch all for deleted quotes, new users, etc
+                NewQuote();
                                     
             if (!IsPostBack)
             {

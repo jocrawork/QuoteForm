@@ -508,13 +508,13 @@ namespace QuoteForm {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl HWEmptyFieldAlert;
         
         /// <summary>
-        /// UpdatePanel1 control.
+        /// UpdateSoftwareLine control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
+        protected global::System.Web.UI.UpdatePanel UpdateSoftwareLine;
         
         /// <summary>
         /// repSW control.
@@ -535,6 +535,15 @@ namespace QuoteForm {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl SWEmptyFieldAlert;
         
         /// <summary>
+        /// UpdateContentLine control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdateContentLine;
+        
+        /// <summary>
         /// repCC control.
         /// </summary>
         /// <remarks>
@@ -553,6 +562,15 @@ namespace QuoteForm {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl CCEmptyFieldAlert;
         
         /// <summary>
+        /// UpdateInstallLine control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdateInstallLine;
+        
+        /// <summary>
         /// repInst control.
         /// </summary>
         /// <remarks>
@@ -569,6 +587,15 @@ namespace QuoteForm {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl InstEmptyFieldAlert;
+        
+        /// <summary>
+        /// UpdateReccurringLine control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdateReccurringLine;
         
         /// <summary>
         /// repRec control.
