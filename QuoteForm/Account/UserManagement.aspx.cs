@@ -14,6 +14,7 @@ namespace QuoteForm
     public partial class UserManagement : Page
     {
         IDocumentSession session = HttpContext.Current.GetOwinContext().Get<IDocumentSession>();
+        ApplicationUserManager userManager = HttpContext.Current.GetOwinContext().Get<ApplicationUserManager>();
         
         List<ApplicationUser> users = new List<ApplicationUser>();
         RavenRoleStore roleStore = new RavenRoleStore();
@@ -93,30 +94,24 @@ namespace QuoteForm
         
         protected void AddToRole(Object source, EventArgs e)
         {
-            var userManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            userManager.AddToRole(usersDDL.SelectedItem.Value,rolesDDL.SelectedItem.Text);
 
-            var user = usersDDL.SelectedItem.Value;
-            userManager.AddToRole(user,rolesDDL.SelectedItem.Text);
-
-            LoadUsersInRole();
+            session.SaveChanges();
+            Session["DDLchoice"] = rolesDDL.SelectedIndex;
+            Response.Redirect(Request.RawUrl);
         }
         protected void repUsers_ItemCommand(Object source, CommandEventArgs e)
         {
-            var userManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            //var roleManager = Request.GetOwinContext().Get<ApplicationRoleManager>();
             var user = userManager.FindByEmail(e.CommandArgument.ToString());
 
             if(e.CommandName == "Remove")
             {
                 Session["DDLchoice"] = rolesDDL.SelectedIndex;
                 userManager.RemoveFromRole(user.Id, rolesDDL.SelectedItem.Text);
-
-                userManager.Update(user);
-
-                Response.Redirect(Request.RawUrl);
             }
 
-
+            session.SaveChanges();
+            Response.Redirect(Request.RawUrl);
         }
     }
 }

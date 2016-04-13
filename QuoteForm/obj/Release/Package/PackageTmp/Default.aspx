@@ -317,10 +317,10 @@
                             <asp:HiddenField ID="Category" Value="Hardware" runat="server"/>
                             <td><asp:Label ID="Product" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Name") %>' /></td> <!--TODO: make this clickable to edit -->
                             <td><asp:Label ID="PartNumber" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.PartNumber") %>' /></td>
-                            <td><asp:Label ID="PartCost" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Cost") %>' /></td>
-                            <td><asp:Label ID="UnitPrice" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Price") %>' /></td>
+                            <td><asp:Label ID="PartCost" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Cost", "{0:C2}") %>' /></td>
+                            <td><asp:Label ID="UnitPrice" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Price", "{0:C2}") %>' /></td>
                             <td><asp:Label ID="Quantity" runat="server" Text='<%# Eval("Quantity") %>' /></td>
-                            <td><asp:Label ID="Price" runat="server" Text='<%# Eval("Total") %>' /></td>
+                            <td><asp:Label ID="Price" runat="server" Text='<%# Eval("Total", "{0:C2}") %>' /></td>
                             <td><asp:Button class="btn btn-danger" ID="DeleteHardware" ClientIDMode="Static" runat="server" Text="Delete" CommandName="Delete" CommandArgument='<%# Container.ItemIndex %>'/></td>
                         </tr>
                     </ItemTemplate>
@@ -360,10 +360,10 @@
                                 <asp:HiddenField ID="Category" Value="Software" runat="server"/>
                                 <td><asp:Label ID="Product" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Name") %>' /></td> <!--TODO: make this clickable to edit -->
                                 <td><asp:Label ID="PartNumber" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.PartNumber") %>' /></td>
-                                <td><asp:Label ID="PartCost" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Cost") %>' /></td>
-                                <td><asp:Label ID="UnitPrice" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Price") %>' /></td>
+                                <td><asp:Label ID="PartCost" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Cost", "{0:C2}") %>' /></td>
+                                <td><asp:Label ID="UnitPrice" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Price", "{0:C2}") %>' /></td>
                                 <td><asp:Label ID="Quantity" runat="server" Text='<%# Eval("Quantity") %>' /></td>
-                                <td><asp:Label ID="Price" runat="server" Text='<%# Eval("Total") %>' /></td>
+                                <td><asp:Label ID="Price" runat="server" Text='<%# Eval("Total", "{0:C2}") %>' /></td>
                                 <td><asp:Button class="btn btn-danger" ID="DeleteSoftware" runat="server" Text="Delete" CommandName="Delete" CommandArgument='<%# Container.ItemIndex %>'/></td>
                             </tr>
                     </ItemTemplate>
@@ -404,10 +404,10 @@
                                 <asp:HiddenField ID="Category" Value="ContentCreation" runat="server"/>
                                 <td><asp:Label ID="Product" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Name") %>' /></td> <!--TODO: make this clickable to edit -->
                                 <td><asp:Label ID="PartNumber" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.PartNumber") %>' /></td>
-                                <td><asp:Label ID="PartCost" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Cost") %>' /></td>
-                                <td><asp:Label ID="UnitPrice" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Price") %>' /></td>
+                                <td><asp:Label ID="PartCost" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Cost", "{0:C2}") %>' /></td>
+                                <td><asp:Label ID="UnitPrice" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Price", "{0:C2}") %>' /></td>
                                 <td><asp:Label ID="Quantity" runat="server" Text='<%# Eval("Quantity") %>' /></td>
-                                <td><asp:Label ID="Price" runat="server" Text='<%# Eval("Total") %>' /></td>
+                                <td><asp:Label ID="Price" runat="server" Text='<%# Eval("Total", "{0:C2}") %>' /></td>
                                 <td><asp:Button class="btn btn-danger" ID="DeleteContent" runat="server" Text="Delete" CommandName="Delete" CommandArgument='<%# Container.ItemIndex %>'/></td>
                             </tr>
                     </ItemTemplate>
@@ -448,10 +448,10 @@
                                 <asp:HiddenField ID="Category" Value="Installation" runat="server"/>
                                 <td><asp:Label ID="Product" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Name") %>' /></td> <!--TODO: make this clickable to edit -->
                                 <td><asp:Label ID="PartNumber" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.PartNumber") %>' /></td>
-                                <td><asp:Label ID="PartCost" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Price") %>' /></td>
-                                <td><asp:Label ID="UnitPrice" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Price") %>' /></td>
+                                <td><asp:Label ID="PartCost" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Cost", "{0:C2}") %>' /></td>
+                                <td><asp:Label ID="UnitPrice" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Price", "{0:C2}") %>' /></td>
                                 <td><asp:Label ID="Quantity" runat="server" Text='<%# Eval("Quantity") %>' /></td>
-                                <td><asp:Label ID="Price" runat="server" Text='<%# Eval("Total") %>' /></td>
+                                <td><asp:Label ID="Price" runat="server" Text='<%# Eval("Total", "{0:C2}") %>' /></td>
                                 <td><asp:Button class="btn btn-danger" ID="DeleteInstall" runat="server" Text="Delete" CommandName="Delete" CommandArgument='<%# Container.ItemIndex %>'/></td>
                             </tr>
                     </ItemTemplate>
@@ -496,10 +496,10 @@
                                 <asp:HiddenField ID="Category" Value="Recurring" runat="server"/>
                                 <td><asp:Label ID="Product" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Name") %>' /></td> <!--TODO: make this clickable to edit -->
                                 <td><asp:Label ID="PartNumber" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.PartNumber") %>' /></td>
-                                <td><asp:Label ID="PartCost" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Price") %>' /></td>
-                                <td><asp:Label ID="UnitPrice" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Price") %>' /></td>
+                                <td><asp:Label ID="PartCost" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Cost", "{0:C2}") %>' /></td>
+                                <td><asp:Label ID="UnitPrice" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Product.Price", "{0:C2}") %>' /></td>
                                 <td><asp:Label ID="Quantity" runat="server" Text='<%# Eval("Quantity") %>' /></td>
-                                <td><asp:Label ID="Price" runat="server" Text='<%# Eval("Total") %>' /></td>
+                                <td><asp:Label ID="Price" runat="server" Text='<%# Eval("Total", "{0:C2}") %>' /></td>
                                 <td><asp:Button class="btn btn-danger" ID="DeleteRecurring" runat="server" Text="Delete" CommandName="Delete" CommandArgument='<%# Container.ItemIndex %>'/></td>
                             </tr>
                     </ItemTemplate>
@@ -527,12 +527,12 @@
     <div class="well" style="text-align:center">
         <asp:Table runat="server" ID="TotalsTable" Width="100%">
             <asp:TableHeaderRow>
-                <asp:TableHeaderCell>Hardware</asp:TableHeaderCell>
-                <asp:TableHeaderCell>Software</asp:TableHeaderCell>
-                <asp:TableHeaderCell>Content Creation</asp:TableHeaderCell>
-                <asp:TableHeaderCell>Installation</asp:TableHeaderCell>
-                <asp:TableHeaderCell>Recurring</asp:TableHeaderCell>
-                <asp:TableHeaderCell>TOTAL</asp:TableHeaderCell>
+                <asp:TableCell><b>Hardware</b></asp:TableCell>
+                <asp:TableCell><b>Software</b></asp:TableCell>
+                <asp:TableCell><b>Content</b></asp:TableCell>
+                <asp:TableCell><b>Installation</b></asp:TableCell>
+                <asp:TableCell><b>Recurring</b></asp:TableCell>
+                <asp:TableCell><b>TOTAL</b></asp:TableCell>
             </asp:TableHeaderRow>
             <asp:TableRow>
                 <asp:TableCell ID="HWtotalCell"></asp:TableCell>

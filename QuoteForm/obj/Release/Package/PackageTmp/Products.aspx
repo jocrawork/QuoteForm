@@ -69,8 +69,8 @@
                         <td><asp:Label ID="Category" runat="server" Text='<%#Eval("Category") %>' /></td>
                         <td><asp:Label ID="Name" runat="server" Text='<%#Eval("Name") %>' /></td>
                         <td><asp:Label ID="PartNumber" runat="server" Text='<%#Eval("PartNumber") %>' /></td>
-                        <td><asp:Label ID="Price" runat="server" Text='<%#Eval("Price") %>' /></td>
-                        <td><asp:Label ID="Cost" runat="server" Text='<%#Eval("Cost") %>' /></td>
+                        <td><asp:Label ID="Price" runat="server" Text='<%#Eval("Price", "{0:C2}") %>' /></td>
+                        <td><asp:Label ID="Cost" runat="server" Text='<%#Eval("Cost", "{0:C2}") %>' /></td>
                         <td><asp:Label ID="DefaultQuantity" runat="server" Text='<%#Eval("DefaultQuantity") %>' /></td>
                         <%if(User.IsInRole("Admin")||User.IsInRole("Products")){ %>
                         <td><asp:LinkButton ID="Edit" runat="server" class="btn btn-warning" CommandName="Edit" CommandArgument='<%# Eval("Id") %>'><span class="glyphicon glyphicon-pencil"/></asp:LinkButton>

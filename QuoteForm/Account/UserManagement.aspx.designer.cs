@@ -13,6 +13,24 @@ namespace QuoteForm {
     public partial class UserManagement {
         
         /// <summary>
+        /// NewRoleName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox NewRoleName;
+        
+        /// <summary>
+        /// AddRoleBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button AddRoleBtn;
+        
+        /// <summary>
         /// rolesDDL control.
         /// </summary>
         /// <remarks>
@@ -47,23 +65,5 @@ namespace QuoteForm {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater repUsers;
-        
-        /// <summary>
-        /// NewRoleName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox NewRoleName;
-        
-        /// <summary>
-        /// AddRoleBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button AddRoleBtn;
     }
 }

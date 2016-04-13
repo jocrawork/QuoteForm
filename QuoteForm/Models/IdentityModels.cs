@@ -67,15 +67,9 @@ namespace QuoteForm.Models
 
         public List<ApplicationUser> GetUsersInRole(string role)
         {
-            List<ApplicationUser> users = session.Query<ApplicationUser>().ToList();
-            
-            foreach(var user in users)
-            {//remove any user that does not match role name to their Roles[]
-                if (!(user.Roles.Any(r => r == role)))
-                    users.Remove(user);
-            }
-
-            return users;
+            return session.Query<ApplicationUser>()
+                .Where(x => x.Roles.Any(r => r == role))
+                .ToList();
         }
 
         public List<RavenRole> GetAllRoles()

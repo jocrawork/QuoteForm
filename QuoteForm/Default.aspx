@@ -302,9 +302,9 @@
 
     <h3 style="text-align:center">Hardware</h3>
     <div class="well" style="width:100%">
-        <asp:UpdatePanel ID="UpdateHardwareLine" updatemode="Conditional" runat="server" ChildrenAsTriggers="true">
+        <asp:UpdatePanel ID="UpdateHardwareLine" updatemode="Always" runat="server" ChildrenAsTriggers="true">
             <Triggers>
-                
+                <asp:AsyncPostBackTrigger ControlID="repHW"/>
             </Triggers>
             <ContentTemplate>
                 <asp:Repeater ID="repHW" runat="server" OnItemCommand="rep_ItemCommand">

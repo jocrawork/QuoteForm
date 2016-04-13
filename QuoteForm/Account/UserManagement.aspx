@@ -2,11 +2,18 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
     <h3>USER MANAGEMENT</h3>
-
-    <asp:DropDownList runat="server" ID="rolesDDL" OnSelectedIndexChanged="LoadUsersInRole" AutoPostBack="true">  
-    </asp:DropDownList>
-    <asp:DropDownList ID="usersDDL" runat="server" />
-    <asp:Button ID="Save" runat="server" OnClick="AddToRole" text="Add" class="btn btn-success"/>
+    <div class="well">
+        <div>
+            <asp:TextBox ID="NewRoleName" runat="server" placeholder="Add New Role"/>
+            <asp:Button ID="AddRoleBtn" runat="server" OnClick="AddRole" text="Save" class="btn btn-success"/>
+        </div>
+        <div>
+            <asp:DropDownList runat="server" ID="rolesDDL" OnSelectedIndexChanged="LoadUsersInRole" AutoPostBack="true">  
+            </asp:DropDownList>
+            <asp:DropDownList ID="usersDDL" runat="server" />
+            <asp:Button ID="Save" runat="server" OnClick="AddToRole" text="Add" class="btn btn-success"/>
+        </div>
+     </div>
 
     <div>
         <asp:Repeater runat="server" id="repUsers" OnItemCommand="repUsers_ItemCommand">
@@ -31,11 +38,8 @@
 
     <!-- PICK ROLE, LOAD USERS, ADD USER TEXTBOX -->
 
-    <!-- ADD NEW ROLE TO DB
-    <div style="display:none">
-        <asp:TextBox ID="NewRoleName" runat="server" placeholder="Add Role"/>
-        <asp:Button ID="AddRoleBtn" runat="server" OnClick="AddRole" text="Save"/>
-    </div>
-    -->
+    <!-- ADD NEW ROLE TO DB style="display:none" -->
+    
+    
 
 </asp:Content>
